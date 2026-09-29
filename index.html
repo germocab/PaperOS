@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 6.0</title>
+<title>Paper e-reader 7.0</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -21,19 +21,20 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:background .3s}
-.device{--bz:16px;--sw:358px;--sh:768px;width:min(calc(var(--sw) + var(--bz)*2),calc(100vw - 16px));height:min(calc(var(--sh) + var(--bz)*2),calc(100% - 16px));max-height:calc(100vh - 16px);background:var(--shell);border-radius:calc(26px + var(--bz)*1.125);padding:var(--bz);box-shadow:0 0 0 2px var(--shell2),0 24px 60px #0006}
+.device{--bz:16px;--sw:358px;--sh:768px;width:min(calc(var(--sw) + var(--bz)*2),calc(100vw - 16px));height:min(calc(var(--sh) + var(--bz)*2),calc(100% - 16px));max-height:calc(100vh - 16px);background:var(--shell);border-radius:calc(26px + var(--bz)*1.125);padding:var(--bz);box-shadow:0 0 0 4px var(--dc,#c8c8c8),inset 0 0 0 1px #fff2,0 24px 60px #0006}
 :root{--g-white:linear-gradient(135deg,#fff,#e9e9e9 55%,#d4d4d4);--g-dark:linear-gradient(135deg,#3a3a3a,#0f0f0f 60%);
 --g-gold:linear-gradient(135deg,#ecdcab 0%,#d8bf78 45%,#c9ad60 72%,#e0cb8d 100%);
 --g-rose:linear-gradient(135deg,#ffe4dc 0%,#e8a99b 25%,#b76e79 48%,#f6cfc3 65%,#d8907f 85%,#ffe1d8 100%);
 --g-blue:linear-gradient(135deg,#2c4377 0%,#1e305d 55%,#26396b 100%);
 --g-green:linear-gradient(135deg,#2c5340 0%,#1a3527 55%,#234630 100%);
---g-auto:linear-gradient(135deg,#f0f0f0 50%,#171717 50%)}
-.device.f-white{background:#e9e9e9;box-shadow:0 0 0 2px #fff,0 24px 60px #0006}
-.device.f-dark{background:#0f0f0f;box-shadow:0 0 0 2px #2e2e2e,0 24px 60px #000a}
-.device.f-gold{background:var(--g-gold);box-shadow:0 0 0 2px #e6d497,inset 0 1px 3px #fff5,inset 0 -1px 3px #7a560a33,0 24px 60px #0006}
-.device.f-rose{background:var(--g-rose);box-shadow:0 0 0 2px #f3c2b6,inset 0 2px 5px #fffa,inset 0 -2px 5px #7a3a4466,0 24px 60px #0006}
-.device.f-blue{background:var(--g-blue);box-shadow:0 0 0 2px #22376b,inset 0 1px 3px #8fa8e833,inset 0 -1px 3px #00000055,0 24px 60px #000a}
-.device.f-green{background:var(--g-green);box-shadow:0 0 0 2px #1f4030,inset 0 1px 3px #8fd0a833,inset 0 -1px 3px #00000055,0 24px 60px #000a}
+--g-auto:linear-gradient(135deg,#f0f0f0 50%,#171717 50%);
+--g-silver:linear-gradient(135deg,#f3f3f3,#d9d9d9 55%,#c6c6c6);
+--g-red:linear-gradient(135deg,#a92338 0%,#7d1326 55%,#5f0d1c 100%);
+--g-lblue:linear-gradient(135deg,#d3f0fb 0%,#96d4ee 55%,#7dc1de 100%);
+--g-orange:linear-gradient(135deg,#ffa347 0%,#f4711a 55%,#d95c0a 100%)}
+
+.device.f-white{background:#ececec}
+.device.f-dark{background:#0f0f0f}
 .screen{position:relative;width:100%;height:100%;background:var(--screen);border-radius:26px;overflow:hidden;display:flex;flex-direction:column;filter:var(--f,none);color:var(--ink)}
 .screen.dark{--screen:#1b1b1b;--ink:#e8e8e8;--mut:#999;--card:#333;--card2:#4a4a4a;--btn:#2c2c2c;--bar:#2a2a2a}
 .screen.warm{--screen:#efe4cc;--card:#dccdaa;--btn:#e2d5b8;--bar:#dccfae}
@@ -76,8 +77,8 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .agrid button:active{transform:scale(.92)}.agrid button i{width:10px;height:10px;border-radius:50%;background:var(--mut)}
 .agrid button.on{background:var(--ink)}.agrid button.on i{background:var(--screen)}
 .device{position:relative}
-.device{--hw:#b5b5b5}.device.f-white{--hw:#c4c4c4}.device.f-dark{--hw:#3c3c3c}.device.f-gold{--hw:#bfa458}.device.f-rose{--hw:#c48f82}.device.f-blue{--hw:#34498a}.device.f-green{--hw:#30604a}
-.hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--hw),color-mix(in srgb,var(--hw) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
+
+.hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--dc,#c8c8c8),color-mix(in srgb,var(--dc,#c8c8c8) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
 .hw::after{content:"";position:absolute;inset:-9px}
 .hw-top{top:-5px;right:64px;width:62px;height:6px;border-radius:5px 5px 0 0;--hwd:180deg}
 .hw-side{right:-5px;top:24%;width:6px;height:84px;border-radius:0 5px 5px 0}
@@ -85,6 +86,24 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side{right:0;border-radius:5px 0 0 5px}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
+.bk{position:absolute;inset:0;border-radius:inherit;background:var(--dg,var(--g-silver));overflow:hidden;display:none;color:var(--dink,#222)}
+.bk::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 70% at 20% 0%,#ffffff40,transparent 60%),linear-gradient(200deg,transparent 60%,#0000001f)}
+.device.isback .bk{display:block}.device.isback .screen,.device.isback .hw{display:none}
+.bklogo{position:absolute;left:0;right:0;top:36%;translate:0 -50%;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;user-select:none}
+.bklogo .lg{width:58px;height:58px;border-radius:50%;background:var(--dink,#222);color:var(--dc,#ccc);display:grid;place-items:center;font:900 30px 'Playfair Display',serif}
+.bklogo b{font:900 34px/1 'Playfair Display',serif;letter-spacing:.02em}
+.bklogo small{font:500 11px 'DM Sans',sans-serif;letter-spacing:.35em;text-transform:uppercase;opacity:.7;margin-left:.35em}
+.stks{position:absolute;inset:0;z-index:2}
+.stk{position:absolute;width:calc(22% * var(--s,1));aspect-ratio:1;translate:-50% -50%;rotate:var(--r,0deg);touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none;border-radius:14px}
+.stk:active{cursor:grabbing}.stk.sel{outline:2px dashed var(--dink,#222);outline-offset:5px}
+.stk svg,.pick svg{width:100%;height:100%;display:block;pointer-events:none;filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(0 2px 3px #0005)}
+.bktray{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;background:#000b;color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:18px;padding:8px}
+.bkrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bkb{border:0;border-radius:10px;padding:8px 10px;background:#ffffff26;color:#fff;font:500 12px 'DM Sans',sans-serif;cursor:pointer}.bkb.main{background:#fff;color:#111;font-weight:700}.bkb:active{transform:scale(.94)}
+.bkhint{flex:1;min-width:0;font-size:11px;opacity:.75;padding:0 4px}
+.bkstks{display:flex;gap:6px;overflow-x:auto;margin-top:8px;scrollbar-width:none}.bkstks::-webkit-scrollbar{display:none}
+.pick{flex:none;width:46px;height:46px;border-radius:12px;border:0;background:#ffffff1f;padding:6px;cursor:pointer}.pick:active{transform:scale(.9)}
+.bktray.mini{left:50%;right:auto;translate:-50% 0;display:flex;gap:6px;padding:6px}
 .bw{padding:12px 0 6px;flex:none;position:relative;z-index:6}
 .screen.hb .bw{order:99;padding:6px 0 12px}.screen.hb .pop{top:auto;bottom:calc(100% + 10px)}
 .top .info{transition:opacity .5s}.screen.nod .top .info{opacity:0}
@@ -239,13 +258,13 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 .hx{flex:none;width:40px;border:0;border-radius:12px;background:var(--btn);color:var(--ink);cursor:pointer;display:grid;place-items:center}.hx:active{transform:scale(.92)}
 .hd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style></head><body>
-<div class="device"><div class="screen" id="scr"></div>
+<div class="device"><div class="screen" id="scr"></div><div class="bk" id="bk"></div>
 <button class="hw hw-top" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
 <button class="hw hw-side" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,pbtn:'ctrl',plogo:true,pact:'next',batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,pbtn:'ctrl',plogo:true,pact:'next',bezel:'auto',dcol:'silver',stk:[],back:false,stkSel:null,bkTray:true,batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -267,7 +286,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='6.0';
+const VERSION='7.0';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -276,7 +295,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -578,8 +597,15 @@ function text(){
  return hdr(`go('${S.setFrom==='rctrl'&&book()?'rctrl':'ctrl'}')`,'Settings')+`<div class="body"><h2>Text size</h2>
  <input class="slider" type="range" min="11" max="24" value="${S.size}" aria-label="Text size" oninput="S.size=+this.value;$('#pv').style.setProperty('--fs',S.size+'px');save()">
  <div class="text" id="pv" style="--fs:${S.size}px;padding:0;flex:none;cursor:default">The quick brown fox jumps over the lazy dog. Adjust until the page feels right.</div>
- <h2 style="margin-top:22px">Device frame</h2>
- <div class="frames" role="radiogroup" aria-label="Device frame color">${FR.map(([k,n])=>`<button class="fr${frameSel()===k?' on':''}" role="radio" aria-checked="${frameSel()===k}" onclick="setFrame('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
+ <h2 style="margin-top:22px">Bezel color</h2>
+ <div class="frames" role="radiogroup" aria-label="Bezel color">${BZ.map(([k,n])=>`<button class="fr${bezSel()===k?' on':''}" role="radio" aria-checked="${bezSel()===k}" onclick="setBezel('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
+ <h2 style="margin-top:22px">Device color</h2>
+ <p class="chsub">Shown on the rim, the buttons and the back of your PaperDevice.</p>
+ <div class="frames" role="radiogroup" aria-label="Device color">${Object.entries(DEV).map(([k,c])=>`<button class="fr${S.dcol===k?' on':''}" role="radio" aria-checked="${S.dcol===k}" onclick="setDcol('${k}')"><i class="sw" style="background:${c.g}"></i>${c.n}</button>`).join('')}</div>
+ <h2 style="margin-top:22px">Back of device</h2>
+ <p class="chsub">Flip your PaperDevice over to place stickers on the back. There are 10 to choose from.</p>
+ <button class="item" onclick="flipTo(true)">${svg('shot')} Flip to the back <span>${S.stk.length} ${S.stk.length===1?'sticker':'stickers'}</span></button>
+ ${S.stk.length?`<button class="item" onclick="clearStk()">${svg('trash')} ${S.stkClr?'Tap again to remove all':'Remove all stickers'}</button>`:''}
  <h2 style="margin-top:22px">Bezels &amp; screen</h2><div class="dims">
  ${Object.entries(DIM).map(([k,[mn,mx,id,n]])=>`<div class="lab"><label for="${id}">${n}</label><span id="dl-${k}">${k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px'}</span></div><input class="slider" id="${id}" type="range" min="${mn}" max="${mx}" value="${S[k]}" aria-label="${n}" oninput="setDim('${k}',this.value)">`).join('')}
  <button class="item" onclick="resetDim()">Reset size &amp; bezels</button></div>
@@ -609,9 +635,55 @@ function text(){
  <p class="chsub" style="margin-top:-2px">Shows your phone's battery next to the date in PaperControls. ${navigator.getBattery?'':'This browser does not support it (Safari on iPhone does not).'}</p>
  <p class="ver">Paper e-reader · Version ${VERSION}</p></div>`;
 }
-const FR=[['auto','Match Mode'],['white','White'],['dark','Dark'],['gold','Shiny Gold'],['rose','Shiny Rose Gold'],['blue','Deep Blue'],['green','Forest Green']];
+const BZ=[['auto','Match Mode'],['white','White'],['dark','Dark']];
+const DEV={silver:{n:'Silver',g:'var(--g-silver)',base:'#c8c8c8',ink:'#262626'},
+ gold:{n:'Shiny Gold',g:'var(--g-gold)',base:'#d3b86b',ink:'#4a3708'},
+ rose:{n:'Shiny Rose Gold',g:'var(--g-rose)',base:'#d9a394',ink:'#4d2530'},
+ blue:{n:'Deep Blue',g:'var(--g-blue)',base:'#2a3f75',ink:'#e8eeff'},
+ green:{n:'Forest Green',g:'var(--g-green)',base:'#25503b',ink:'#e6f6ec'},
+ red:{n:'Cherry Red Cola',g:'var(--g-red)',base:'#9a1f30',ink:'#ffeef0'},
+ lblue:{n:'Waterfall Light Blue',g:'var(--g-lblue)',base:'#8fd0ec',ink:'#0f3447'},
+ orange:{n:'Freedom Orange',g:'var(--g-orange)',base:'#f0731a',ink:'#fff4ea'}};
+const STK=[
+['star','Star','<path d="M32 5l8 16.5 18 2.4-13.2 12.6 3.3 17.9L32 45.9 15.9 54.4l3.3-17.9L6 23.9l18-2.4z" fill="#ffc933"/><path d="M32 14l4 9" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>'],
+['heart','Heart','<path d="M32 57S7 41 7 22a12.5 12.5 0 0 1 25-3 12.5 12.5 0 0 1 25 3c0 19-25 35-25 35z" fill="#ee4468"/><path d="M15 22a8 8 0 0 1 8-8" stroke="#fff" stroke-opacity=".65" stroke-width="3.5" fill="none" stroke-linecap="round"/>'],
+['book','Book','<path d="M6 14c9-3.5 18-3 26 2 8-5 17-5.500 26-2v37c-9-3.500-18-3-26 2-8-5-17-5.500-26-2z" fill="#5b7fd6"/><path d="M32 16v37" stroke="#fff" stroke-width="3"/><path d="M13 24c5-1.500 10-1.500 15 .5M13 32c5-1.500 10-1.500 15 .5M36 24.500c5-2 10-2 15-.5M36 32.500c5-2 10-2 15-.5" stroke="#fff" stroke-width="2.500" fill="none" stroke-linecap="round"/>'],
+['coffee','Coffee','<ellipse cx="29" cy="52" rx="23" ry="5" fill="#b9b9c4"/><path d="M8 24h36v15a15 15 0 0 1-15 15h-6A15 15 0 0 1 8 39z" fill="#c9793f"/><path d="M44 28h3a6.500 6.500 0 0 1 0 13h-4" stroke="#c9793f" stroke-width="5" fill="none"/><path d="M19 7c-3.500 4 3.500 6 0 11M30 7c-3.500 4 3.500 6 0 11" stroke="#8a8a96" stroke-width="3" fill="none" stroke-linecap="round"/>'],
+['moon','Moon','<path d="M42 6a26 26 0 1 0 16 36A21 21 0 0 1 42 6z" fill="#f2cf63"/><circle cx="24" cy="36" r="3.500" fill="#d9b249"/><circle cx="32" cy="48" r="2.500" fill="#d9b249"/>'],
+['sun','Sun','<g stroke="#ff9f1c" stroke-width="5" stroke-linecap="round"><path d="M32 5v8M32 51v8M5 32h8M51 32h8M13 13l5.500 5.500M45.500 45.500L51 51M13 51l5.500-5.500M45.500 18.500L51 13"/></g><circle cx="32" cy="32" r="14" fill="#ffc22e"/>'],
+['bolt','Bolt','<path d="M38 3L11 37h17l-4 24 29-36H36z" fill="#ffd23f"/><path d="M36 10L21 30" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>'],
+['flower','Flower','<g fill="#f47fb0"><circle cx="46" cy="32" r="10"/><circle cx="36.300" cy="45.300" r="10"/><circle cx="20.700" cy="40.200" r="10"/><circle cx="20.700" cy="23.800" r="10"/><circle cx="36.300" cy="18.700" r="10"/></g><circle cx="32" cy="32" r="8" fill="#ffd23f"/>'],
+['smile','Smile','<circle cx="32" cy="32" r="26" fill="#ffcf40"/><circle cx="23" cy="26" r="3.500" fill="#4a3300"/><circle cx="41" cy="26" r="3.500" fill="#4a3300"/><path d="M19 38c4 9 22 9 26 0" stroke="#4a3300" stroke-width="4" fill="none" stroke-linecap="round"/>'],
+['rocket','Rocket','<path d="M20 30L8 44l14-3zM44 30l12 14-14-3z" fill="#ee4468"/><path d="M32 3c11 8 13 22 11 37H21C19 25 21 11 32 3z" fill="#eceef5"/><circle cx="32" cy="24" r="6" fill="#5bb8f5"/><path d="M26 43h12l-6 16z" fill="#ff9f1c"/>']];
+const stkName=k=>(STK.find(x=>x[0]===k)||['','Sticker'])[1];
+const stkSvg=k=>`<svg viewBox="0 0 64 64" aria-hidden="true">${(STK.find(x=>x[0]===k)||[0,0,''])[2]}</svg>`;
+/* back of the device */
+function backHTML(){return `<div class="bklogo" aria-label="Paper"><span class="lg">P</span><b>Paper</b><small>e-reader</small></div><div class="stks" id="stks">${S.stk.map(stkEl).join('')}</div><div class="bktray${S.bkTray?'':' mini'}" id="bktray">${trayHTML()}</div>`}
+const stkEl=t=>`<div class="stk${t.id===S.stkSel?' sel':''}" data-id="${t.id}" style="left:${t.x}%;top:${t.y}%;--s:${t.s};--r:${t.r}deg" role="img" aria-label="${stkName(t.k)} sticker">${stkSvg(t.k)}</div>`;
+function trayHTML(){
+ if(!S.bkTray)return `<button class="bkb main" onclick="flipTo(false)">Front</button><button class="bkb" onclick="S.bkTray=true;renderBack()">Stickers</button>`;
+ const t=S.stk.find(x=>x.id===S.stkSel);
+ return `<div class="bkrow"><button class="bkb main" onclick="flipTo(false)">Front</button>${t?`<button class="bkb" aria-label="Smaller" onclick="stkSize(-.15)">−</button><button class="bkb" aria-label="Bigger" onclick="stkSize(.15)">+</button><button class="bkb" onclick="stkRot()">Rotate</button><button class="bkb" onclick="stkDel()">Remove</button>`:`<span class="bkhint">Tap a sticker to add it. Drag to move.</span>`}<button class="bkb" onclick="S.bkTray=false;renderBack()">Hide</button></div>
+ <div class="bkstks">${STK.map(([k,n])=>`<button class="pick" aria-label="Add ${n} sticker" onclick="addStk('${k}')">${stkSvg(k)}</button>`).join('')}</div>`}
+function renderBack(){const b=$('#bk');if(!b)return;if(!S.back){if(b.firstChild)b.innerHTML='';return}b.innerHTML=backHTML()}
+function updTray(){const t=$('#bktray');if(t){t.className='bktray'+(S.bkTray?'':' mini');t.innerHTML=trayHTML()}}
+function flipTo(back){
+ const d=$('.device'),sw=()=>{S.back=back;S.stkSel=null;render()};
+ if(!S.anim||!d||!d.animate)return sw();
+ const a=d.animate([{transform:'perspective(1000px) rotateY(0)'},{transform:'perspective(1000px) rotateY(90deg)'}],{duration:200,easing:'ease-in'});
+ a.onfinish=()=>{sw();d.animate([{transform:'perspective(1000px) rotateY(-90deg)'},{transform:'perspective(1000px) rotateY(0)'}],{duration:260,easing:'ease-out'})}}
+const selStk=()=>S.stk.find(x=>x.id===S.stkSel);
+function addStk(k){if(S.stk.length>=40)return;const R=Math.random;
+ const t={id:'s'+Date.now().toString(36)+Math.floor(R()*1e4).toString(36),k,x:Math.round(28+R()*44),y:Math.round(50+R()*20),s:1,r:Math.round((R()-.5)*30)};
+ S.stk.push(t);S.stkSel=t.id;save();renderBack()}
+function stkStyle(t){const e=document.querySelector(`.stk[data-id="${t.id}"]`);if(e){e.style.setProperty('--s',t.s);e.style.setProperty('--r',t.r+'deg')}}
+function stkSize(d){const t=selStk();if(!t)return;t.s=Math.max(.5,Math.min(2.4,+(t.s+d).toFixed(2)));stkStyle(t);save()}
+function stkRot(){const t=selStk();if(!t)return;t.r=(t.r+15)%360;stkStyle(t);save()}
+function stkDel(){S.stk=S.stk.filter(x=>x.id!==S.stkSel);S.stkSel=null;save();renderBack()}
+function clearStk(){if(!S.stkClr){S.stkClr=true;render();setTimeout(()=>{S.stkClr=false},3000);return}S.stkClr=false;S.stk=[];S.stkSel=null;save();render();toast('Stickers removed')}
 const DIM={bz:[0,32,'bezel-size','Bezels'],dw:[260,520,'dev-w','Screen width'],dh:[480,900,'dev-h','Screen height']};
 function applyDev(){const d=$('.device');if(!d)return;
+ const c=DEV[S.dcol]||DEV.silver;d.style.setProperty('--dc',c.base);d.style.setProperty('--dg',c.g);d.style.setProperty('--dink',c.ink);
  d.style.setProperty('--bz',S.bz+'px');d.style.setProperty('--sw',S.dw+'px');d.style.setProperty('--sh',S.dh+'px');
  if(S.full){d.style.translate='';return}
  const bw=document.body.clientWidth||innerWidth,bh=document.body.clientHeight||innerHeight,
@@ -626,9 +698,10 @@ function setAlign(x,y,fromGrid){if(x!=null)S.ax=+x;if(y!=null)S.ay=+y;applyDev()
 addEventListener('resize',()=>applyDev());
 function setDim(k,v){S[k]=+v;applyDev();const l=$('#dl-'+k);if(l)l.textContent=k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px';save();clearTimeout(setDim.t);setDim.t=setTimeout(()=>{S.fc={}},200)}
 function resetDim(){S.bz=16;S.dw=358;S.dh=768;save();render()}
-const frameSel=()=>S.frame||'auto';
-const frameKey=()=>{const f=frameSel();return f==='auto'?(S.dark?'dark':'white'):f};
-function setFrame(k){S.frame=k;save();render()}
+const bezSel=()=>BZ.some(x=>x[0]===S.bezel)?S.bezel:'auto';
+const frameKey=()=>{const b=bezSel();return b==='auto'?(S.dark?'dark':'white'):b};
+function setBezel(k){S.bezel=k;save();render()}
+function setDcol(k){S.dcol=k;save();render()}
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const V={home,books,ctrl,read,rctrl,track,chapters,notes,text,done};
 
@@ -728,8 +801,8 @@ function battInit(){if(battObj||!navigator.getBattery)return;
 function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
  s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(S.nod&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
- $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'');
- applyDev();
+ $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'')+(S.back?' isback':'');
+ applyDev();renderBack();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
  S.hp=null;
  s.innerHTML=V[S.screen]();
@@ -808,9 +881,30 @@ sc.addEventListener('pointermove',e=>{if(!dnOn)return;const dx=e.clientX-dnX,dy=
 ['pointerup','pointercancel'].forEach(n=>sc.addEventListener(n,()=>{dnOn=false}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.screen==='home'&&S.q!==null)closeSearch()});
 
+/* drag stickers on the back */
+let sd=null;
+(()=>{const bk=$('#bk');
+bk.addEventListener('pointerdown',e=>{
+ const el=e.target.closest('.stk');
+ if(!el){if(!e.target.closest('.bktray')&&S.stkSel){S.stkSel=null;document.querySelectorAll('.stk.sel').forEach(x=>x.classList.remove('sel'));updTray()}return}
+ const t=S.stk.find(x=>x.id===el.dataset.id);if(!t)return;
+ e.preventDefault();
+ const box=$('#stks').getBoundingClientRect();
+ sd={t,el,box,id:e.pointerId,ox:e.clientX-(box.left+t.x/100*box.width),oy:e.clientY-(box.top+t.y/100*box.height),mv:false};
+ try{el.setPointerCapture(e.pointerId)}catch(_){}
+ if(S.stkSel!==t.id){document.querySelectorAll('.stk.sel').forEach(x=>x.classList.remove('sel'));S.stkSel=t.id;el.classList.add('sel');updTray()}});
+bk.addEventListener('pointermove',e=>{if(!sd||e.pointerId!==sd.id)return;const b=sd.box,
+ x=Math.max(0,Math.min(100,(e.clientX-sd.ox-b.left)/b.width*100)),y=Math.max(0,Math.min(100,(e.clientY-sd.oy-b.top)/b.height*100));
+ sd.t.x=+x.toFixed(1);sd.t.y=+y.toFixed(1);sd.el.style.left=sd.t.x+'%';sd.el.style.top=sd.t.y+'%';sd.mv=true});
+const end=e=>{if(sd&&e.pointerId===sd.id){if(sd.mv)save();sd=null}};
+bk.addEventListener('pointerup',end);bk.addEventListener('pointercancel',end)})();
+
 (async()=>{
  await idb();const st=await get('state');
  if(st)Object.assign(S,st);S.timeout=0;
+ /* 6.x -> 7.0: the metallic frames became device colours */
+ if(st&&st.bezel===undefined){const f=st.frame;if(['gold','rose','blue','green'].includes(f))S.dcol=f;S.bezel=(f==='white'||f==='dark')?f:'auto'}
+ S.back=false;
  if(!S.books.length){
   const lo='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus nunc, semper et dolor at, tincidunt sagittis enim. Sed sollicitudin dolor id velit condimentum scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tincidunt tortor, at accumsan metus volutpat vel.';
   S.books.push({id:1,title:'Sample: Reading Paper',pages:Array.from({length:24},(_,i)=>i===0?'Welcome to Paper. Tap the right side of a page to go forward, the left side to go back, and the center for reading controls. Add your own books from the home screen. To highlight, press and hold a word, drag to select, then pick a color.\n\n'+lo:lo+'\n\n'+lo.split('. ').reverse().join('. ')),page:0,last:0,added:Date.now()});
