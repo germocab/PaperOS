@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 4.5</title>
+<title>Paper e-reader 4.5.2</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -71,6 +71,10 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .fr.on{font-weight:700}.sw{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 1px #0003,inset 0 1px 2px #fff8}
 .fr.on .sw{box-shadow:0 0 0 2px var(--screen),0 0 0 4px var(--ink)}
 .sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.dims{margin:8px 0 4px}.dims .lab{display:flex;justify-content:space-between;font:500 13px 'DM Sans';margin-top:12px}.dims .lab span{color:var(--mut)}.dims .slider{margin:4px 0 2px}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:150px;margin:8px auto 4px}
+.agrid button{height:40px;border:0;border-radius:10px;background:var(--btn);cursor:pointer;display:grid;place-items:center;transition:transform .18s,background-color .2s}
+.agrid button:active{transform:scale(.92)}.agrid button i{width:10px;height:10px;border-radius:50%;background:var(--mut)}
+.agrid button.on{background:var(--ink)}.agrid button.on i{background:var(--screen)}
 .sw-blue{background:var(--g-blue)}.sw-green{background:var(--g-green)}.sw-auto{background:var(--g-auto)}
 .sheet input.rn{width:100%;padding:12px;border-radius:12px;border:2px solid var(--ink);background:var(--btn);color:var(--ink);font:500 15px 'DM Sans',system-ui,sans-serif;margin-bottom:10px;outline:none}.book small{color:var(--mut);font-size:12px}
 .cover.has,.cv.has{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05)}
@@ -118,7 +122,7 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .chsub{color:var(--mut);font-size:12px;margin:-4px 0 12px}
 .back{font:500 12px 'DM Sans';background:none;border:0;color:var(--ink);cursor:pointer;padding:4px 0}
 /* full view */
-.device{transition:padding .4s cubic-bezier(.2,.8,.2,1),border-radius .4s,width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),background-color .35s}
+.device{transition:padding .4s cubic-bezier(.2,.8,.2,1),border-radius .4s,width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),translate .3s cubic-bezier(.2,.8,.2,1),background-color .35s}
 .device.full{width:100vw;height:100%;max-height:none;padding:0;border-radius:0;background:transparent;box-shadow:none}
 .full .screen{border-radius:0}
 .full .top,.full .text,.full .body,.full .trk{width:100%;max-width:760px;margin-left:auto;margin-right:auto}
@@ -219,7 +223,7 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -241,7 +245,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='4.5';
+const VERSION='4.5.2';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -250,7 +254,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -548,6 +552,12 @@ function text(){
  <h2 style="margin-top:22px">Bezels &amp; screen</h2><div class="dims">
  ${Object.entries(DIM).map(([k,[mn,mx,id,n]])=>`<div class="lab"><label for="${id}">${n}</label><span id="dl-${k}">${k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px'}</span></div><input class="slider" id="${id}" type="range" min="${mn}" max="${mx}" value="${S[k]}" aria-label="${n}" oninput="setDim('${k}',this.value)">`).join('')}
  <button class="item" onclick="resetDim()">Reset size &amp; bezels</button></div>
+ <h2 style="margin-top:22px">Device Alignment</h2>
+ <p class="chsub">Move a small PaperDevice closer to the edge of your phone. Only has an effect when the device is smaller than the screen.</p>
+ <div class="agrid" role="group" aria-label="Alignment presets">${[0,50,100].map(y=>[0,50,100].map(x=>`<button data-x="${x}" data-y="${y}" class="${S.ax===x&&S.ay===y?'on':''}" aria-label="Align ${['top','middle','bottom'][y/50]} ${['left','center','right'][x/50]}" onclick="setAlign(${x},${y})"><i></i></button>`).join('')).join('')}</div>
+ <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
+ <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
+ <button class="item" onclick="setAlign(50,50)">Center device</button></div>
  <button class="item" style="margin-top:14px" onclick="toggleGest()">${svg('gest')} Gestures <span>${S.gest?'On':'Off'}</span></button>
  <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
  <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
@@ -557,7 +567,18 @@ function text(){
 const FR=[['auto','Match Mode'],['white','White'],['dark','Dark'],['gold','Shiny Gold'],['rose','Shiny Rose Gold'],['blue','Deep Blue'],['green','Forest Green']];
 const DIM={bz:[0,32,'bezel-size','Bezels'],dw:[260,520,'dev-w','Screen width'],dh:[480,900,'dev-h','Screen height']};
 function applyDev(){const d=$('.device');if(!d)return;
- d.style.setProperty('--bz',S.bz+'px');d.style.setProperty('--sw',S.dw+'px');d.style.setProperty('--sh',S.dh+'px')}
+ d.style.setProperty('--bz',S.bz+'px');d.style.setProperty('--sw',S.dw+'px');d.style.setProperty('--sh',S.dh+'px');
+ if(S.full){d.style.translate='';return}
+ const bw=document.body.clientWidth||innerWidth,bh=document.body.clientHeight||innerHeight,
+  w=Math.min(S.dw+S.bz*2,bw-16),h=Math.min(S.dh+S.bz*2,bh-16),
+  fx=Math.max(0,(bw-w)/2-8),fy=Math.max(0,(bh-h)/2-8);
+ d.style.translate=`${(S.ax-50)/50*fx}px ${(S.ay-50)/50*fy}px`}
+const alLab=v=>v<=5?'Edge':v===50?'Center':v>=95?'Edge':(v<50?'Toward edge':'Toward edge');
+function setAlign(x,y,fromGrid){if(x!=null)S.ax=+x;if(y!=null)S.ay=+y;applyDev();
+ const ex=$('#al-x'),ey=$('#al-y');if(ex)ex.value=S.ax;if(ey)ey.value=S.ay;
+ const lx=$('#dl-ax'),ly=$('#dl-ay');if(lx)lx.textContent=S.ax+'%';if(ly)ly.textContent=S.ay+'%';
+ document.querySelectorAll('.agrid button').forEach(b=>b.classList.toggle('on',+b.dataset.x===S.ax&&+b.dataset.y===S.ay));save()}
+addEventListener('resize',()=>applyDev());
 function setDim(k,v){S[k]=+v;applyDev();const l=$('#dl-'+k);if(l)l.textContent=k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px';save();clearTimeout(setDim.t);setDim.t=setTimeout(()=>{S.fc={}},200)}
 function resetDim(){S.bz=16;S.dw=358;S.dh=768;save();render()}
 const frameSel=()=>S.frame||'auto';
