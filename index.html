@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 8.8</title>
+<title>Paper e-reader 9.0</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -85,11 +85,11 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--dc,#c8c8c8),color-mix(in srgb,var(--dc,#c8c8c8) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
 .hw::after{content:"";position:absolute;inset:-9px}
 .hw-top{top:-9px;right:64px;width:62px;height:8px;border-radius:5px 5px 0 0;--hwd:180deg;background:linear-gradient(180deg,#ffa347,#f4711a 55%,#c9560a)}
-.hw-side{right:-9px;top:24%;width:8px;height:84px;border-radius:0 5px 5px 0}
-.hw-home{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#7dbcff,#3d8bf0 55%,#2467c4)}
+.hw-home{right:-9px;top:24%;width:8px;height:76px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#4a4a4a,#151515 55%,#000);box-shadow:inset 0 1px 0 #fff3,0 1px 3px #0008}
 .hw-home:active{transform:translateX(-2px);filter:brightness(.85)}
-.hw-top:active{transform:translateY(2px);filter:brightness(.85)}.hw-side:active{transform:translateX(-2px);filter:brightness(.85)}
-.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side,.full .hw-home{right:0;border-radius:5px 0 0 5px}
+.hw-top:active{transform:translateY(2px);filter:brightness(.85)}
+.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-home{right:0;border-radius:5px 0 0 5px}
+.chip:disabled{opacity:.45;cursor:default}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
 .bk{position:absolute;inset:0;border-radius:inherit;background:var(--dg,var(--g-silver));overflow:hidden;display:none;color:var(--dink,#222)}
@@ -272,8 +272,7 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 </style></head><body>
 <div class="device"><div class="screen" id="scr"></div><div class="bk" id="bk"></div>
 <button class="hw hw-top" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
-<button class="hw hw-side" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
-<button class="hw hw-home" id="hwHome" aria-label="Home button" title="Home" onclick="hwPress('h')"></button></div>
+<button class="hw hw-home" id="hwHome" aria-label="Home, Back or PaperControls button" title="Home / Back / PaperControls" onclick="hwPress('h')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
@@ -299,7 +298,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='8.8';
+const VERSION='9.0';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -644,27 +643,29 @@ const SETP={
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>`],
- hw:['Hardware Buttons','Which button is which on your PaperDevice.',()=>hwGuide()+`<h2 style="margin-top:22px">Options</h2>
- <div class="fl"><small>Blue button works as</small><div class="chips" role="radiogroup" aria-label="Blue button works as"><button class="chip${S.hmode!=='back'?' on':''}" role="radio" aria-checked="${S.hmode!=='back'}" onclick="setHw('hmode','home')">Home</button><button class="chip${S.hmode==='back'?' on':''}" role="radio" aria-checked="${S.hmode==='back'}" onclick="setHw('hmode','back')">Back</button></div></div>
- <button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>
+ hw:['Hardware Buttons','Which button is which on your PaperDevice.',()=>hwGuide()+`<h2 style="margin-top:22px">Black button</h2>
+ <div class="fl"><small>Works as</small><div class="chips" role="radiogroup" aria-label="Black button works as">${[['home','Home'],['back','Back'],['ctrl','PaperControls']].map(([k,n])=>`<button class="chip${hmodeEff()===k?' on':''}" role="radio" aria-checked="${hmodeEff()===k}" ${S.plogo===false?'disabled':''} onclick="setHw('hmode','${k}')">${n}</button>`).join('')}</div></div>
+ <p class="chsub">${S.plogo===false?'The P button is hidden, so the black button works as PaperControls on Home and while reading. In other places it follows your choice.':'PaperControls only opens on Home or while reading.'}</p>
+ <button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it on Home and while reading. The black button then becomes your PaperControls button. In reading you can also tap the center of a page.</p>
+ <h2 style="margin-top:22px">PaperAction</h2>
  <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>`],
  exp:['Experimental','Off by default and may not work everywhere.',()=>` <button class="item" onclick="tog('batt')">${svg('wifi')} Battery percentage <span>${S.batt?'On':'Off'}</span></button>
  <p class="chsub" style="margin-top:-2px">Shows your phone's battery next to the date in PaperControls. ${navigator.getBattery?'':'This browser does not support it (Safari on iPhone does not).'}</p>`],
 };
 function hwGuide(){
- const c=(DEV[S.dcol]||DEV.silver).base,pa=(PACT.find(x=>x[0]===(S.pact||'next'))||PACT[0])[1];
+ const pa=(PACT.find(x=>x[0]===(S.pact||'next'))||PACT[0])[1],m=hmodeEff(),
+  nm={home:'Home button',back:'Back button',ctrl:'PaperControls button'}[m],
+  ds={home:'Takes you straight to Home from anywhere.',back:'Takes you back to the previous page.',ctrl:'Opens PaperControls on Home or while reading. Press it again to close them.'}[m]+(S.plogo===false?' Set automatically because the P button is hidden.':'');
  const B=[['#f4711a','PaperAction','Top edge','Does what you choose below. Right now: '+pa+'.','Customizable'],
-  [c,'PaperButton','Right side, upper','Opens PaperControls. Press it again to close them.','Fixed'],
-  ['#3d8bf0','Home button','Right side, lower',S.hmode==='back'?'Right now it works as a Back button: it takes you to the previous page.':'Right now it takes you straight to Home from anywhere.','Customizable']];
- return `<svg viewBox="0 0 340 300" role="img" aria-label="Diagram of the PaperDevice hardware buttons" style="width:100%;height:auto;display:block;margin:4px 0 12px">
- <rect x="30" y="34" width="170" height="250" rx="30" fill="${c}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
- <rect x="44" y="48" width="142" height="222" rx="20" fill="var(--screen)" stroke="currentColor" stroke-opacity=".25"/>
+  ['#111','Black button · '+nm,'Right side',ds,'Customizable']];
+ return `<svg viewBox="0 0 400 260" role="img" aria-label="Diagram of the PaperDevice hardware buttons" style="width:100%;height:auto;display:block;margin:4px 0 12px">
+ <rect x="30" y="34" width="170" height="210" rx="30" fill="${(DEV[S.dcol]||DEV.silver).base}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+ <rect x="44" y="48" width="142" height="182" rx="20" fill="var(--screen)" stroke="currentColor" stroke-opacity=".25"/>
  <rect x="92" y="26" width="52" height="8" rx="3" fill="#f4711a"/>
- <rect x="200" y="84" width="8" height="70" rx="3" fill="${c}" stroke="currentColor" stroke-opacity=".5"/>
- <rect x="200" y="176" width="8" height="46" rx="3" fill="#3d8bf0"/>
- <g stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" fill="none"><path d="M118 26V14H150"/><path d="M208 119H236"/><path d="M208 199H236"/></g>
+ <rect x="200" y="84" width="8" height="70" rx="3" fill="#111" stroke="currentColor" stroke-opacity=".5"/>
+ <g stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" fill="none"><path d="M118 26V14H150"/><path d="M208 119H232"/></g>
  <g fill="currentColor" font-family="DM Sans,system-ui,sans-serif" font-size="13" font-weight="700">
- <text x="154" y="18" fill="#f4711a">PaperAction</text><text x="242" y="123">PaperButton</text><text x="242" y="203" fill="#3d8bf0">Home button</text></g></svg>
+ <text x="154" y="18" fill="#f4711a">PaperAction</text><text x="238" y="117">Black button</text><text x="238" y="134" font-size="11" font-weight="500" opacity=".75">${nm.replace(' button','')}</text></g></svg>
  `+B.map(([col,n,pos,d,tag])=>`<div style="display:flex;gap:12px;align-items:flex-start;background:var(--btn);border-radius:12px;padding:12px;margin-bottom:8px"><i class="sw" style="flex:none;width:14px;height:34px;border-radius:5px;background:${col};box-shadow:0 0 0 1px #0004"></i><div style="flex:1;min-width:0"><b style="font:700 13px 'DM Sans',sans-serif">${n}</b> <small style="color:var(--mut);font-size:11px">· ${pos}</small><div style="font-size:12px;line-height:1.45;margin-top:2px">${d}</div><small style="color:var(--mut);font-size:11px">${tag}</small></div></div>`).join('')}
 function setPg(p){S.setPage=p;render()}
 function text(){
@@ -799,7 +800,9 @@ function hlErase(){const b=book(),h=S.hp;if(!b||!h)return;const n=S.hls.length;
  S.hls=S.hls.filter(x=>!(x.b===b.id&&x.p===b.page&&x.a<h.z&&x.z>h.a));
  save();try{getSelection().removeAllRanges()}catch(e){}render();toast(S.hls.length<n?'Highlight removed':'No highlight there')}
 /* hardware buttons */
-const logoOn=()=>S.plogo!==false;
+const RS=['home','read','rctrl','track'],HIDE_P=['home','read','rctrl'];
+const logoOn=()=>S.plogo!==false||!HIDE_P.includes(S.screen);
+const hmodeEff=()=>S.plogo===false&&(RS.includes(S.screen)||S.screen==='ctrl')?'ctrl':(S.hmode||'home');
 const PACT=[['next','Next page'],['prev','Previous page'],['dark','Toggle Light/Dark mode'],['nod','Start No Distraction'],['chap','Next chapter'],['save','Save page'],['bm','Open Bookmarks'],['scr','Turn screen on/off']];
 const hwMsg=m=>toast(m,2000);
 function setHw(k,v){S[k]=v;save();render()}
@@ -823,18 +826,20 @@ function backNav(){
  go(t);return 'Back - '+(NAMES[t]||'')}
 function hwPress(w){
  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
- glow(w==='a'?'top':'right',w==='a'?'#f4711a':w==='h'?'#5aa9ff':'#7b7f95',w==='a'?'hwA':w==='h'?'hwHome':'hwB');
+ glow(w==='a'?'top':'right',w==='a'?'#f4711a':'#9aa0b5',w==='a'?'hwA':'hwHome');
  if(S.off){S.off=false;render();return hwMsg(w==='a'&&(S.pact||'next')==='scr'?'PaperAction - Screen on':'Screen on')}
- if(w==='h'&&S.hmode==='back')return hwMsg(backNav());
+ if(w==='h'&&hmodeEff()==='back')return hwMsg(backNav());
+ if(w==='h'&&hmodeEff()==='ctrl'){
+  if(S.screen==='ctrl'){closeCtrl();return hwMsg('PaperControls - Closed')}
+  if(!RS.includes(S.screen))return hwMsg('PaperControls only opens on Home or while reading');
+  S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;
+  go('ctrl');return hwMsg('PaperControls')}
  if(w==='h'){
   if(S.screen==='home'&&S.q!==null){closeSearch();return hwMsg('Home')}
   S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;
   if(S.screen==='home'){render();return hwMsg('Home - Already here')}
   go('home');return hwMsg('Home')}
  S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;
- if(w==='b'){
-  if(S.screen==='ctrl'){closeCtrl();return hwMsg('PaperButton - Back')}
-  go('ctrl');return hwMsg('PaperButton - PaperControls')}
  const a=S.pact||'next',name=(PACT.find(x=>x[0]===a)||PACT[0])[1],pre='PaperAction - ',
   reading=!!book()&&['read','rctrl','track'].includes(S.screen);
  if(a==='scr'){S.off=true;render();return}
