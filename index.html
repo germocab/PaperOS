@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 8.7</title>
+<title>Paper e-reader 8.8</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -299,7 +299,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='8.7';
+const VERSION='8.8';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -308,7 +308,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,wbg:S.wbg});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,wbg:S.wbg,hmode:S.hmode});
 
 /* pagination */
 function paginate(text){
@@ -644,13 +644,28 @@ const SETP={
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>`],
- hw:['Hardware Buttons','Set up the buttons on your PaperDevice.',()=>` <h2>Hardware buttons</h2>
- <p class="chsub">The PaperAction (orange) is on top of the device. On its right side are the PaperButton, which opens PaperControls, and just under it the Home button (blue), which takes you to Home and can't be customized.</p>
+ hw:['Hardware Buttons','Which button is which on your PaperDevice.',()=>hwGuide()+`<h2 style="margin-top:22px">Options</h2>
+ <div class="fl"><small>Blue button works as</small><div class="chips" role="radiogroup" aria-label="Blue button works as"><button class="chip${S.hmode!=='back'?' on':''}" role="radio" aria-checked="${S.hmode!=='back'}" onclick="setHw('hmode','home')">Home</button><button class="chip${S.hmode==='back'?' on':''}" role="radio" aria-checked="${S.hmode==='back'}" onclick="setHw('hmode','back')">Back</button></div></div>
  <button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>
  <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>`],
  exp:['Experimental','Off by default and may not work everywhere.',()=>` <button class="item" onclick="tog('batt')">${svg('wifi')} Battery percentage <span>${S.batt?'On':'Off'}</span></button>
  <p class="chsub" style="margin-top:-2px">Shows your phone's battery next to the date in PaperControls. ${navigator.getBattery?'':'This browser does not support it (Safari on iPhone does not).'}</p>`],
 };
+function hwGuide(){
+ const c=(DEV[S.dcol]||DEV.silver).base,pa=(PACT.find(x=>x[0]===(S.pact||'next'))||PACT[0])[1];
+ const B=[['#f4711a','PaperAction','Top edge','Does what you choose below. Right now: '+pa+'.','Customizable'],
+  [c,'PaperButton','Right side, upper','Opens PaperControls. Press it again to close them.','Fixed'],
+  ['#3d8bf0','Home button','Right side, lower',S.hmode==='back'?'Right now it works as a Back button: it takes you to the previous page.':'Right now it takes you straight to Home from anywhere.','Customizable']];
+ return `<svg viewBox="0 0 340 300" role="img" aria-label="Diagram of the PaperDevice hardware buttons" style="width:100%;height:auto;display:block;margin:4px 0 12px">
+ <rect x="30" y="34" width="170" height="250" rx="30" fill="${c}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+ <rect x="44" y="48" width="142" height="222" rx="20" fill="var(--screen)" stroke="currentColor" stroke-opacity=".25"/>
+ <rect x="92" y="26" width="52" height="8" rx="3" fill="#f4711a"/>
+ <rect x="200" y="84" width="8" height="70" rx="3" fill="${c}" stroke="currentColor" stroke-opacity=".5"/>
+ <rect x="200" y="176" width="8" height="46" rx="3" fill="#3d8bf0"/>
+ <g stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" fill="none"><path d="M118 26V14H150"/><path d="M208 119H236"/><path d="M208 199H236"/></g>
+ <g fill="currentColor" font-family="DM Sans,system-ui,sans-serif" font-size="13" font-weight="700">
+ <text x="154" y="18" fill="#f4711a">PaperAction</text><text x="242" y="123">PaperButton</text><text x="242" y="203" fill="#3d8bf0">Home button</text></g></svg>
+ `+B.map(([col,n,pos,d,tag])=>`<div style="display:flex;gap:12px;align-items:flex-start;background:var(--btn);border-radius:12px;padding:12px;margin-bottom:8px"><i class="sw" style="flex:none;width:14px;height:34px;border-radius:5px;background:${col};box-shadow:0 0 0 1px #0004"></i><div style="flex:1;min-width:0"><b style="font:700 13px 'DM Sans',sans-serif">${n}</b> <small style="color:var(--mut);font-size:11px">· ${pos}</small><div style="font-size:12px;line-height:1.45;margin-top:2px">${d}</div><small style="color:var(--mut);font-size:11px">${tag}</small></div></div>`).join('')}
 function setPg(p){S.setPage=p;render()}
 function text(){
  const pg=SETP[S.setPage];
@@ -792,10 +807,25 @@ function glow(side,col,id){const d=$('.device'),sc=$('#scr'),bt=document.getElem
  const a=sc.getBoundingClientRect(),b=bt.getBoundingClientRect(),top=side==='top',
   p=top?b.left+b.width/2-a.left:b.top+b.height/2-a.top,half=(top?b.width:b.height)/2;
  const g=document.createElement('div');g.className='glow '+side;g.style.setProperty('--gc',col);g.style.setProperty('--p',p+'px');g.style.setProperty('--r',(half+24)+'px');d.append(g);setTimeout(()=>g.remove(),800)}
+const NAMES={home:'Home',books:'Library',ctrl:'PaperControls',read:'the page',rctrl:'the page',track:'Reading tracker',chapters:'Chapters',notes:'Bookmark',text:'Settings',done:'Home'};
+function backNav(){
+ if(S.sheet||S.confirm||S.rename||S.bmenu||S.dmenu||S.hlEdit){S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;render();return 'Back - Closed'}
+ const sc=S.screen,b=book();let t=null;
+ if(sc==='home'){if(S.q!==null){closeSearch();return 'Back'}return 'Back - Already on Home'}
+ if(sc==='books'||sc==='done')t='home';
+ else if(sc==='ctrl'){closeCtrl();return 'Back'}
+ else if(sc==='read')t=['home','books','notes'].includes(S.readFrom)?S.readFrom:'home';
+ else if(sc==='rctrl'||sc==='chapters')t='read';
+ else if(sc==='track')t=b&&hasCh(b)?'chapters':'read';
+ else if(sc==='notes')t='ctrl';
+ else if(sc==='text'){if(S.setPage){S.setPage=null;render();return 'Back - Settings'}t=S.setFrom==='rctrl'&&b?'rctrl':'ctrl'}
+ else t='home';
+ go(t);return 'Back - '+(NAMES[t]||'')}
 function hwPress(w){
  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
  glow(w==='a'?'top':'right',w==='a'?'#f4711a':w==='h'?'#5aa9ff':'#7b7f95',w==='a'?'hwA':w==='h'?'hwHome':'hwB');
  if(S.off){S.off=false;render();return hwMsg(w==='a'&&(S.pact||'next')==='scr'?'PaperAction - Screen on':'Screen on')}
+ if(w==='h'&&S.hmode==='back')return hwMsg(backNav());
  if(w==='h'){
   if(S.screen==='home'&&S.q!==null){closeSearch();return hwMsg('Home')}
   S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;
