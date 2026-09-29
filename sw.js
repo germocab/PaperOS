@@ -1,5 +1,5 @@
 // Paper e-reader service worker — bump VERSION when you update index.html
-const VERSION = 'v4';
+const VERSION = 'v6';
 const CACHE = 'paper-' + VERSION;
 const CORE = [
   './', './index.html', './manifest.webmanifest',
