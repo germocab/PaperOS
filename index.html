@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 3.0</title>
+<title>Paper e-reader 4.0</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -23,14 +23,17 @@ html,body{height:100%}
 body{background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:background .3s}
 .device{width:min(390px,100vw - 16px);height:min(800px,100% - 16px);max-height:calc(100vh - 16px);background:var(--shell);border-radius:44px;padding:16px;box-shadow:0 0 0 2px var(--shell2),0 24px 60px #0006}
 :root{--g-white:linear-gradient(135deg,#fff,#e9e9e9 55%,#d4d4d4);--g-dark:linear-gradient(135deg,#3a3a3a,#0f0f0f 60%);
---g-gold:linear-gradient(135deg,#fff3b0 0%,#e6b93a 22%,#a97c12 45%,#f7dc7a 62%,#c8961e 82%,#fbe9a0 100%);
+--g-gold:linear-gradient(135deg,#ecdcab 0%,#d8bf78 45%,#c9ad60 72%,#e0cb8d 100%);
 --g-rose:linear-gradient(135deg,#ffe4dc 0%,#e8a99b 25%,#b76e79 48%,#f6cfc3 65%,#d8907f 85%,#ffe1d8 100%);
---g-blue:linear-gradient(135deg,#2c4fa3 0%,#132a66 30%,#0a1a45 55%,#1f3f8f 78%,#0c2050 100%)}
+--g-blue:linear-gradient(135deg,#2c4377 0%,#1e305d 55%,#26396b 100%);
+--g-green:linear-gradient(135deg,#2c5340 0%,#1a3527 55%,#234630 100%);
+--g-auto:linear-gradient(135deg,#f0f0f0 50%,#171717 50%)}
 .device.f-white{background:#e9e9e9;box-shadow:0 0 0 2px #fff,0 24px 60px #0006}
 .device.f-dark{background:#0f0f0f;box-shadow:0 0 0 2px #2e2e2e,0 24px 60px #000a}
-.device.f-gold{background:var(--g-gold);box-shadow:0 0 0 2px #f6dc85,inset 0 2px 5px #fffa,inset 0 -2px 5px #7a560a66,0 24px 60px #0006}
+.device.f-gold{background:var(--g-gold);box-shadow:0 0 0 2px #e6d497,inset 0 1px 3px #fff5,inset 0 -1px 3px #7a560a33,0 24px 60px #0006}
 .device.f-rose{background:var(--g-rose);box-shadow:0 0 0 2px #f3c2b6,inset 0 2px 5px #fffa,inset 0 -2px 5px #7a3a4466,0 24px 60px #0006}
-.device.f-blue{background:var(--g-blue);box-shadow:0 0 0 2px #1c3a80,inset 0 2px 5px #8fa8e855,inset 0 -2px 5px #00000088,0 24px 60px #000a}
+.device.f-blue{background:var(--g-blue);box-shadow:0 0 0 2px #22376b,inset 0 1px 3px #8fa8e833,inset 0 -1px 3px #00000055,0 24px 60px #000a}
+.device.f-green{background:var(--g-green);box-shadow:0 0 0 2px #1f4030,inset 0 1px 3px #8fd0a833,inset 0 -1px 3px #00000055,0 24px 60px #000a}
 .screen{position:relative;width:100%;height:100%;background:var(--screen);border-radius:26px;overflow:hidden;display:flex;flex-direction:column;filter:var(--f,none);color:var(--ink)}
 .screen.dark{--screen:#1b1b1b;--ink:#e8e8e8;--mut:#999;--card:#333;--card2:#4a4a4a;--btn:#2c2c2c;--bar:#2a2a2a}
 .screen.warm{--screen:#efe4cc;--card:#dccdaa;--btn:#e2d5b8;--bar:#dccfae}
@@ -63,11 +66,11 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .hitb{margin-bottom:14px}.hitb strong{display:block;font:700 14px 'Playfair Display',serif}.hitb small{display:block;color:var(--mut);font-size:11px;margin-bottom:6px}
 .hit{display:block;width:100%;text-align:left;background:var(--btn);border:0;border-radius:12px;padding:10px 12px;margin-bottom:6px;color:var(--ink);font:400 12px/1.5 'Libre Baskerville',Georgia,serif;cursor:pointer}
 .hit i{display:block;font:500 10px 'DM Sans',sans-serif;font-style:normal;color:var(--mut);margin-bottom:2px}.hit mark{background:#ffd54a;color:#111;border-radius:3px;padding:0 1px}.hit:active{transform:scale(.97)}
-.frames{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}
+.frames{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 4px;margin:8px 0}
 .fr{background:none;border:0;color:var(--ink);font:500 10px/1.25 'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;padding:4px 0;text-align:center}
 .fr.on{font-weight:700}.sw{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 1px #0003,inset 0 1px 2px #fff8}
 .fr.on .sw{box-shadow:0 0 0 2px var(--screen),0 0 0 4px var(--ink)}
-.sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.sw-blue{background:var(--g-blue)}
+.sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.sw-blue{background:var(--g-blue)}.sw-green{background:var(--g-green)}.sw-auto{background:var(--g-auto)}
 .sheet input.rn{width:100%;padding:12px;border-radius:12px;border:2px solid var(--ink);background:var(--btn);color:var(--ink);font:500 15px 'DM Sans',system-ui,sans-serif;margin-bottom:10px;outline:none}.book small{color:var(--mut);font-size:12px}
 .cover.has,.cv.has{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05)}
 .empty{color:var(--mut);font-size:13px;padding:6px 0 10px;line-height:1.5}
@@ -79,20 +82,18 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .slider{width:100%;accent-color:var(--ink);margin:6px 0 12px}
 .item{display:flex;width:100%;gap:10px;align-items:center;padding:12px;border-radius:12px;background:var(--btn);border:0;color:var(--ink);font:500 13px 'DM Sans';cursor:pointer;margin-bottom:8px;text-align:left}
 .item span{margin-left:auto;color:var(--mut);font-size:12px}
-.bar{display:flex;align-items:flex-start;justify-content:space-between;gap:2px;background:var(--bar);margin:0 10px;border-radius:24px;padding:10px 10px 8px;flex:none;box-shadow:0 8px 20px #0002,inset 0 1px 0 #ffffff55}
-.bar .grp{display:flex;gap:2px}
-.bar .sep{width:1px;align-self:stretch;margin:4px 3px 16px;background:var(--ink);opacity:.14;border-radius:1px}
+.bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;gap:0;background:var(--bar);margin:0 10px;border-radius:24px;padding:10px 6px 8px;flex:none;box-shadow:0 8px 20px #0002,inset 0 1px 0 #ffffff55}
 .bar .tile{width:42px;height:42px;border-radius:15px;background:var(--btn);display:grid;place-items:center;box-shadow:inset 0 1px 0 #ffffff66,0 2px 4px #0001;transition:background-color .2s,color .2s}
 .bar .tile svg{width:20px;height:20px}
 .bar .tile.pl{background:var(--ink);color:var(--screen);font:900 20px 'Playfair Display',serif}
 .bar .tile.on{background:var(--ink);color:var(--screen)}
-.dwrap{position:relative;display:flex}
+.dwrap{position:relative;display:flex;min-width:0}.dwrap>button{flex:1}
 .dscrim{position:absolute;inset:0;z-index:5}
 .pop{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);z-index:7;width:180px;background:var(--screen);border-radius:14px;padding:6px;box-shadow:0 8px 24px #0005,0 0 0 1px #0002;animation:fade .2s both}
 .bar .pop button{flex-direction:row;justify-content:flex-start;gap:8px;min-width:0;width:100%;padding:11px 10px;border-radius:10px;background:var(--btn);font:500 13px 'DM Sans';margin:0 0 4px;text-align:left}
 .bar .pop button:last-child{margin-bottom:0}
 .bar .pop span{margin-left:auto;color:var(--mut);font-size:11px}
-.bar button{background:none;border:0;color:var(--ink);font:500 10px 'DM Sans',system-ui,sans-serif;letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;min-width:50px;padding:0 2px;text-align:center;white-space:nowrap}
+.bar button{background:none;border:0;color:var(--ink);font:500 10px 'DM Sans',system-ui,sans-serif;letter-spacing:.02em;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;min-width:0;width:100%;padding:0;line-height:1.2;text-align:center;white-space:nowrap}
 .text{flex:1;min-height:0;overflow:hidden;padding:8px 22px 26px;font:var(--fs,14px)/1.65 'Libre Baskerville',Georgia,serif;position:relative;cursor:pointer;white-space:pre-wrap;hyphens:auto}
 .text p{margin-bottom:.9em}.text p:last-child{margin-bottom:0}
 .trk{padding:14px 18px 0;flex:none}
@@ -200,12 +201,24 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .noanim,.noanim *{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){.device,.device *{animation:none!important;transition:none!important}}
 button:focus-visible,input:focus-visible{outline:2px solid #06f;outline-offset:2px}
+.top.home{touch-action:none}
+.bhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.bhead .ic{margin-top:4px;flex:none}
+.sheet .fl>small{font-size:11px;margin-bottom:5px}.sheet .chips{flex-wrap:wrap;overflow:visible}
+.ver{text-align:center;color:var(--mut);font-size:12px;margin:26px 0 6px}
+mark.hl{color:#111;border-radius:2px;padding:0}
+.hl-y{background:#ffd54acc}.hl-g{background:#8fdc9bcc}.hl-b{background:#8ec3ffcc}
+.hlpal{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:8;display:flex;gap:10px;align-items:center;background:var(--ink);padding:8px 12px;border-radius:999px;box-shadow:0 8px 24px #0005;animation:fade .2s both}
+.hlpal button{width:30px;height:30px;border-radius:50%;border:2px solid var(--screen);cursor:pointer;padding:0;display:grid;place-items:center}
+.hlpal button.er{background:var(--screen);color:var(--ink)}.hlpal button:active{transform:scale(.9)}
+.hlrow{display:flex;gap:6px;align-items:stretch;margin-bottom:8px}.hlrow .note{margin:0;flex:1;min-width:0}
+.hx{flex:none;width:40px;border:0;border-radius:12px;background:var(--btn);color:var(--ink);cursor:pointer;display:grid;place-items:center}.hx:active{transform:scale(.92)}
+.hd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style></head><body>
 <div class="device"><div class="screen" id="scr"></div></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -224,7 +237,10 @@ upload:'<svg viewBox="0 0 24 24"><path d="M12 16V5M7 10l5-5 5 5M5 19h14"/></svg>
 gest:'<svg viewBox="0 0 24 24"><path d="M13 12H4M8 7l-4 5 4 5"/><circle cx="18" cy="12" r="2"/></svg>',
 search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>',
 edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></svg>',
-trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>'};
+trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
+filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
+x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
+const VERSION='4.0';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -233,7 +249,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -292,7 +308,7 @@ const clock=()=>new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digi
 const date=()=>new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 let tt;function toast(m){clearTimeout(tt);let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';$('#scr').append(t)}t.textContent=m;tt=setTimeout(()=>t.remove(),1600)}
 function go(s){
- S.dmenu=false;
+ S.dmenu=false;S.bmenu=false;
  if(s==='text')S.setFrom=S.screen==='rctrl'?'rctrl':'ctrl';
  if(s!=='home')S.q=null;
  if(s==='ctrl'){if(['read','rctrl','track'].includes(S.screen)&&book())S.ctrlFrom='read';else if(S.screen==='home')S.ctrlFrom='home';else if(S.screen==='books')S.ctrlFrom='books'}
@@ -303,7 +319,7 @@ function openSheet(id){S.sheet=id;S.confirm=null;S.rename=null;S.sheetIn=true;re
 function closeSheet(){const done=()=>{S.sheet=null;S.confirm=null;S.rename=null;render()};const sh=$('.sheet');
  if(S.anim&&sh){sh.classList.add('out');$('.scrim')?.classList.add('out');setTimeout(done,200)}else done()}
 function delBook(id){if(S.confirm!==id){S.confirm=id;render();return}
- const kill=()=>{S.books=S.books.filter(b=>b.id!==id);S.notes=S.notes.filter(n=>n.b!==id);if(S.cur===id)S.cur=null;save();render()};
+ const kill=()=>{S.books=S.books.filter(b=>b.id!==id);S.notes=S.notes.filter(n=>n.b!==id);S.hls=S.hls.filter(h=>h.b!==id);if(S.cur===id)S.cur=null;save();render()};
  S.sheet=null;S.confirm=null;render();
  const els=S.anim?[...document.querySelectorAll('#scr [data-bid]')].filter(e=>Number(e.dataset.bid)===id):[];
  if(!els.length)return kill();
@@ -344,28 +360,36 @@ const findBooks=q=>S.books.filter(b=>!q||((b.title||'')+' '+(b.file||'')).toLowe
 const snip=(t,o,n)=>{const a=Math.max(0,o-38),e=Math.min(t.length,o+n+72),c=x=>esc(x.replace(/\s+/g,' '));return(a?'…':'')+c(t.slice(a,o))+'<mark>'+c(t.slice(o,o+n))+'</mark>'+c(t.slice(o+n,e))+(e<t.length?'…':'')};
 function contentHits(q){const out=[];
  for(const b of S.books){let n=0;const hits=[];
-  for(let i=0;i<b.pages.length&&n<500;i++){const lc=b.pages[i].toLowerCase();let at=lc.indexOf(q);
-   while(at>-1&&n<500){n++;if(hits.length<3)hits.push({p:i,o:at});at=lc.indexOf(q,at+q.length)}}
-  if(n)out.push({b,n,hits});if(out.length>=25)break}
+  for(let i=0;i<b.pages.length;i++){const lc=b.pages[i].toLowerCase();let at=lc.indexOf(q);
+   while(at>-1){n++;hits.push({p:i,o:at});at=lc.indexOf(q,at+q.length)}}
+  if(n)out.push({b,n,hits})}
  return out}
-function searchHTML(raw){const q=raw.trim().toLowerCase(),tl=findBooks(q);let h='';
- if(tl.length)h+=`<p class="empty">${tl.length} ${tl.length===1?'book':'books'}</p>`+tl.map(bookRow).join('');
+const hitBtn=(b,k,n)=>`<button class="hit" onclick="openHit(${b.id},${k.p},${k.o})"><i>Page ${k.p+1}</i>${snip(b.pages[k.p],k.o,n)}</button>`;
+function searchParts(raw){const q=raw.trim().toLowerCase(),tl=findBooks(q),P=[];
+ if(tl.length)P.push(`<p class="empty">${tl.length} ${tl.length===1?'book':'books'}</p>`+tl.map(bookRow).join(''));
  if(q.length>=2){const ch=contentHits(q);
-  if(ch.length)h+=`<h3 class="sh">Inside your books</h3>`+ch.map(x=>`<div class="hitb"><strong>${esc(x.b.title)}</strong><small>${x.n>=500?'500+':x.n} ${x.n===1?'match':'matches'}</small>${x.hits.map(k=>`<button class="hit" onclick="openHit(${x.b.id},${k.p},${k.o})"><i>Page ${k.p+1}</i>${snip(x.b.pages[k.p],k.o,q.length)}</button>`).join('')}</div>`).join('');
-  else if(!tl.length)h+=`<p class="empty">Nothing matches “${esc(raw.trim())}”.</p>`}
- else if(q&&!tl.length)h+=`<p class="empty">No titles match. Type 2 or more letters to search inside your books.</p>`;
- return h}
+  if(ch.length){P.push('<h3 class="sh">Inside your books</h3>');
+   ch.forEach((x,i)=>{const id='hb'+i;P.push(`<div class="hitb" id="${id}"><strong>${esc(x.b.title)}</strong><small>${x.n} ${x.n===1?'match':'matches'}</small></div>`);
+    for(let j=0;j<x.hits.length;j+=40)P.push([id,x.hits.slice(j,j+40).map(k=>hitBtn(x.b,k,q.length)).join('')])})}
+  else if(!tl.length)P.push(`<p class="empty">Nothing matches “${esc(raw.trim())}”.</p>`)}
+ else if(q&&!tl.length)P.push('<p class="empty">No titles match. Type 2 or more letters to search inside your books.</p>');
+ return P}
+/* every result is shown; long lists are drawn in small time slices so typing stays smooth */
+function fillRes(el,P,v){const g=fillRes.g=(fillRes.g||0)+1;el.innerHTML='';let i=0;
+ const step=()=>{if(g!==fillRes.g||S.q!==v||!el.isConnected)return;const t0=performance.now();
+  while(i<P.length&&performance.now()-t0<12){const x=P[i++];if(typeof x==='string')el.insertAdjacentHTML('beforeend',x);else document.getElementById(x[0])?.insertAdjacentHTML('beforeend',x[1])}
+  if(i<P.length)requestAnimationFrame(step)};step()}
 function openHit(id,p,o){const b=S.books.find(x=>x.id===id);if(!b)return;S.q=null;S.sheet=null;S.cur=id;b.page=p;S.jumpOff=o;b.last=Date.now();save();go('read')}
 function openSearchHome(){S.q='';go('home');setTimeout(()=>$('#q')?.focus(),60)}
 function openSearch(){S.q='';render();setTimeout(()=>$('#q')?.focus(),40)}
 function closeSearch(){S.q=null;render()}
-let qT;function onQ(v){S.q=v;clearTimeout(qT);qT=setTimeout(()=>{const r=$('#res');if(r&&S.q===v)r.innerHTML=searchHTML(v)},v.trim().length>=2?220:0)}
+let qT;function onQ(v){S.q=v;clearTimeout(qT);qT=setTimeout(()=>{const r=$('#res');if(r&&S.q===v)fillRes(r,searchParts(v),v)},v.trim().length>=2?220:0)}
 function home(){
- const tap="S.q===null?openSearch():closeSearch()";
+ const tap="go('ctrl')",ho={label:'Open Paper Controls'};
  if(S.q!==null){const q=S.q.trim().toLowerCase();
-  return hdr("go('ctrl')",'PaperHome',null,tap)+`<div class="body"><div class="sbar"><input id="q" type="search" placeholder="Search titles and text in your books" value="${esc(S.q)}" oninput="onQ(this.value)" aria-label="Search titles and inside your books" autocomplete="off"><button onclick="closeSearch()">Cancel</button></div><div id="res">${searchHTML(S.q)}</div></div>`}
+  return hdr("go('ctrl')",'PaperHome',null,tap,ho)+`<div class="body"><div class="sbar"><input id="q" type="search" placeholder="Search titles and text in your books" value="${esc(S.q)}" oninput="onQ(this.value)" aria-label="Search titles and inside your books" autocomplete="off"><button onclick="closeSearch()">Cancel</button></div><div id="res"></div></div>`}
  const rec=[...S.books].filter(b=>b.last).sort((a,b)=>b.last-a.last).slice(0,6);
- return hdr("go('ctrl')",'PaperHome',null,tap)+`<div class="body"><h2>Resume</h2>
+ return hdr("go('ctrl')",'PaperHome',null,tap,ho)+`<div class="body"><h2>Resume</h2>
  ${rec.length?`<div class="row">${rec.map(coverBtn).join('')}</div>`:'<p class="empty">Books you start reading show up here.</p>'}
  <h2 class="lnk" role="button" tabindex="0" onclick="go('books')" aria-label="Open Your Books page">Your Books <span aria-hidden="true">›</span></h2>
  ${S.books.map(bookRow).join('')}${S.books.length?'':'<p class="empty">No books yet. Open Paper Controls and choose Upload to add EPUB, PDF or TXT files.</p>'}</div>`;
@@ -374,15 +398,23 @@ const SORTS=[['recent','Recently read'],['added','Recently added'],['title','Tit
 const bkExt=b=>((b.file||'').split('.').pop()||'').toLowerCase(),bkPct=b=>b.done?1:b.page/Math.max(1,b.pages.length-1);
 function setBk(k,v){S[k]=v;save();render()}
 function resetBk(){S.bfilter='all';S.btype='all';save();render()}
+const bkChips=(key,opts,cur)=>opts.map(([v,n])=>`<button class="chip${v===cur?' on':''}" aria-pressed="${v===cur}" onclick="setBk('${key}','${v}')">${n}</button>`).join('');
+function openBmenu(){S.bmenu=true;S.bmIn=true;render();S.bmIn=false}
+function closeBmenu(){const done=()=>{S.bmenu=false;render()},sh=$('.sheet');
+ if(S.anim&&sh){sh.classList.add('out');$('.scrim')?.classList.add('out');setTimeout(done,200)}else done()}
+function resetAllBk(){S.bsort='recent';S.bfilter='all';S.btype='all';save();render()}
+function bmenu(){const so=S.bsort||'recent',fi=S.bfilter||'all',ty=S.btype||'all',c=S.bmIn?' in':'';
+ return `<div class="scrim${c}" onclick="closeBmenu()"></div><div class="sheet${c}" role="dialog" aria-label="Sort and filter"><h3>Sort &amp; filter</h3><small>Choose how your books are listed.</small>
+ <div class="fl"><small>Sort by</small><div class="chips">${bkChips('bsort',SORTS,so)}</div></div>
+ <div class="fl"><small>Status</small><div class="chips">${bkChips('bfilter',FILTS,fi)}</div></div>
+ <div class="fl"><small>Format</small><div class="chips">${bkChips('btype',TYPES,ty)}</div></div>
+ <button class="item" style="margin-top:12px" onclick="resetAllBk()">Reset all</button>
+ <button class="item" style="background:var(--ink);color:var(--screen)" onclick="closeBmenu()">Done</button></div>`}
 function books(){
- const so=S.bsort||'recent',fi=S.bfilter||'all',ty=S.btype||'all';
+ const so=S.bsort||'recent',fi=S.bfilter||'all',ty=S.btype||'all',act=so!=='recent'||fi!=='all'||ty!=='all';
  const l=S.books.filter(b=>(fi==='all'||(fi==='done'?!!b.done:fi==='reading'?(!b.done&&b.page>0):(!b.done&&b.page===0)))&&(ty==='all'||bkExt(b)===ty));
  l.sort({recent:(a,b)=>(b.last||0)-(a.last||0),added:(a,b)=>(b.added||0)-(a.added||0),title:(a,b)=>(a.title||'').localeCompare(b.title||'',undefined,{sensitivity:'base',numeric:true}),progress:(a,b)=>bkPct(b)-bkPct(a)}[so]);
- const chips=(key,opts,cur)=>opts.map(([v,n])=>`<button class="chip${v===cur?' on':''}" aria-pressed="${v===cur}" onclick="setBk('${key}','${v}')">${n}</button>`).join('');
- return hdr("go('ctrl')",'Your Books')+`<div class="body"><h2>Your Books</h2><p class="chsub">${l.length===S.books.length?`${l.length} ${l.length===1?'book':'books'}`:`${l.length} of ${S.books.length} books`}</p>
- <div class="fl"><small>Sort by</small><div class="chips">${chips('bsort',SORTS,so)}</div></div>
- <div class="fl"><small>Status</small><div class="chips">${chips('bfilter',FILTS,fi)}</div></div>
- <div class="fl"><small>Format</small><div class="chips">${chips('btype',TYPES,ty)}</div></div>
+ return hdr("go('ctrl')",'Your Books')+`<div class="body"><div class="bhead"><h2>Your Books</h2><button class="ic${act?' on':''}" aria-label="Sort and filter" title="Sort and filter" aria-haspopup="dialog" onclick="openBmenu()">${svg('filter')}</button></div><p class="chsub">${l.length===S.books.length?`${l.length} ${l.length===1?'book':'books'}`:`${l.length} of ${S.books.length} books`}</p>
  <div style="margin-top:12px">${l.length?l.map(bookRow).join(''):`<p class="empty">No books match these filters.</p><button class="item" onclick="resetBk()">Clear filters</button>`}</div></div>`}
 function ctrl(){
  const inBook=!!book();
@@ -394,7 +426,7 @@ function ctrl(){
  <button class="ic" aria-label="Settings" title="Settings" onclick="go('text')">${svg('sett')}</button></div>
  <input class="slider" type="range" min="40" max="100" value="${S.bright}" aria-label="Brightness" oninput="S.bright=this.value;bright();save()">
  <button class="item" onclick="go('home')">${svg('lib')} Library</button>
- <button class="item" onclick="go('notes')">${svg('notes')} Bookmark <span>${S.notes.length}</span></button>
+ <button class="item" onclick="go('notes')">${svg('notes')} Bookmark <span>${S.notes.length+S.hls.length}</span></button>
  <button class="item" onclick="$('#file').click()">${svg('upload')} Upload <span>EPUB, PDF, TXT</span></button>
  <button class="item" onclick="openSearchHome()">${svg('search')} Search <span>Titles & text</span></button>
  <h2>Quick Peek</h2>
@@ -404,20 +436,18 @@ const hasCh=b=>!!(b&&b.ch&&b.ch.length>1);
 function openInfo(){go(hasCh(book())?'chapters':'track')}
 function read(){
  const b=book();if(!b)return go('home'),'';
- return hdr("go('rctrl')",esc(b.title),chInfo(b,`Page ${b.page+1}`),"openInfo()",{lp:'ctrl',ilp:'track',label:hasCh(b)?'Chapters (hold for reading tracker)':'Reading tracker'})+`<div class="text" id="txt" style="--fs:${S.size}px" onclick="tap(event)" aria-label="Book page">${b.pages[b.page].split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}</div>`;
+ return hdr("go('rctrl')",esc(b.title),chInfo(b,`Page ${b.page+1}`),"openInfo()",{lp:'ctrl',ilp:'track',label:hasCh(b)?'Chapters (hold for reading tracker)':'Reading tracker'})+`<div class="text" id="txt" style="--fs:${S.size}px" onclick="tap(event)" aria-label="Book page">${htmlHL(b.pages[b.page],0,hlsFor(b))}</div>`;
 }
 function rctrl(){
  const b=book();
  return `${S.dmenu?'<div class="dscrim" onclick="toggleDmenu()"></div>':''}<div style="padding:12px 0 6px;flex:none;position:relative;z-index:6"><div class="bar" role="toolbar" aria-label="Reading controls">
- <div class="grp"><button onclick="go('ctrl')" aria-label="Paper Controls"><span class="tile pl">P</span>Controls</button>
- <button onclick="go('home')"><span class="tile">${svg('lib')}</span>Library</button></div>
- <i class="sep"></i>
- <div class="grp"><div class="dwrap"><button onclick="toggleDmenu()" aria-haspopup="true" aria-expanded="${!!S.dmenu}"><span class="tile${S.dmenu?' on':''}">${svg('disp')}</span>Display</button>
+ <button onclick="go('ctrl')" aria-label="Paper Controls"><span class="tile pl">P</span>Controls</button>
+ <button onclick="go('home')"><span class="tile">${svg('lib')}</span>Library</button>
+ <div class="dwrap"><button onclick="toggleDmenu()" aria-haspopup="true" aria-expanded="${!!S.dmenu}"><span class="tile${S.dmenu?' on':''}">${svg('disp')}</span>Display</button>
   ${S.dmenu?`<div class="pop" role="menu"><button role="menuitem" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button><button role="menuitem" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button></div>`:''}</div>
- <button onclick="go('text')"><span class="tile">${svg('sett')}</span>Settings</button></div>
- <i class="sep"></i>
- <div class="grp"><button onclick="savePage()"><span class="tile">${svg('save')}</span>Save Page</button></div></div></div>
- <div class="text" style="--fs:${S.size}px" onclick="go('read')">${b.pages[b.page].split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}</div>`;
+ <button onclick="go('text')"><span class="tile">${svg('sett')}</span>Settings</button>
+ <button onclick="savePage()"><span class="tile">${svg('save')}</span>Save Page</button></div></div>
+ <div class="text" style="--fs:${S.size}px" onclick="go('read')">${htmlHL(b.pages[b.page],0,hlsFor(b))}</div>`;
 }
 function chapters(){
  const b=book();if(!b)return go('home'),'';
@@ -431,6 +461,20 @@ function chapters(){
 function goCh(i){const b=book();if(!b||!b.ch[i])return;b.page=Math.max(0,Math.min(b.pages.length-1,b.ch[i].s));b.last=Date.now();save();go('read')}
 /* fit text inside the visible area: split a stored page into sub-pages that never overflow */
 const htmlOf=t=>t.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('');
+const ntok=t=>t.split(/\s+/).filter(Boolean).length;
+const hlsFor=b=>S.hls.filter(h=>h.b===b.id&&h.p===b.page);
+/* highlights are stored as word ranges of the whole page, so they survive any font size or screen size */
+function htmlHL(t,tb,hls){
+ if(!hls.length)return htmlOf(t);
+ const cm={};for(const h of hls)for(let i=h.a;i<h.z;i++)cm[i]=h.c;
+ let n=tb;
+ return t.split('\n\n').map(p=>{const parts=p.split(/(\s+)/);let o='',cur=null,buf='';
+  const flush=()=>{if(buf)o+=cur?`<mark class="hl hl-${cur}">${buf}</mark>`:buf;buf=''};
+  for(let k=0;k<parts.length;k++){const w=parts[k];if(!w)continue;
+   if(/^\s+$/.test(w)){const nc=parts[k+1]?(cm[n]||null):null;
+    if(cur&&nc===cur)buf+=esc(w);else{flush();cur=null;o+=esc(w)}}
+   else{const c=cm[n]||null;if(c!==cur){flush();cur=c}buf+=esc(w);n++}}
+  flush();return `<p>${o}</p>`}).join('')}
 function fitText(el,b,idx){
  const src=b.pages[b.page],key=`${b.id}|${b.page}|${S.size}|${el.clientWidth}x${el.clientHeight}`;
  S.fc=S.fc||{};let subs=S.fc[key];
@@ -451,18 +495,20 @@ function fitText(el,b,idx){
   if(Object.keys(S.fc).length>300)S.fc={};
   S.fc[key]=subs}
  const k=Math.max(0,Math.min(idx,subs.length-1));
- el.innerHTML=htmlOf(subs[k]);
- return{subs,idx:k}}
+ const tb=subs.slice(0,k).reduce((n,x)=>n+ntok(x),0);
+ el.innerHTML=htmlHL(subs[k],tb,hlsFor(b));
+ return{subs,idx:k,tb}}
 function layoutText(cur,b){
  const el=$('.text');if(!el)return;
  const key=b.id+'|'+b.page;
  if(S.spK!==key){S.spK=key;S.sp=b.spP===b.page?(b.sp||0):0}
+ if(S.jumpTok!=null&&cur==='read'){const r0=fitText(el,b,0);let acc=0,k=0;for(let i=0;i<r0.subs.length;i++){k=i;acc+=ntok(r0.subs[i]);if(S.jumpTok<acc)break}S.sp=k;S.jumpTok=null}
  if(S.jumpOff!=null&&cur==='read'){const r0=fitText(el,b,0);let acc=0,k=0;for(let i=0;i<r0.subs.length;i++){k=i;acc+=r0.subs[i].length+1;if(S.jumpOff<acc)break}S.sp=k;S.jumpOff=null}
  if(cur==='track'){fitText(el,b,0);return}
  const tag=key+'|'+S.size+'|'+S.sp;
- if(cur==='rctrl'&&S.subTxt&&S.subFor===tag){el.innerHTML=htmlOf(S.subTxt);return}
+ if(cur==='rctrl'&&S.subTxt&&S.subFor===tag){el.innerHTML=htmlHL(S.subTxt,S.subTb||0,hlsFor(b));return}
  const r=fitText(el,b,S.sp);
- S.sp=r.idx;S.nsub=r.subs.length;S.subTxt=r.subs[r.idx];S.subFor=key+'|'+S.size+'|'+S.sp;b.sp=r.idx;b.spP=b.page}
+ S.sp=r.idx;S.nsub=r.subs.length;S.subTxt=r.subs[r.idx];S.subTb=r.tb;S.subFor=key+'|'+S.size+'|'+S.sp;b.sp=r.idx;b.spP=b.page}
 function track(){
  const b=book(),last=b.pages.length;
  return `<div class="trk"><div class="nav"><button onclick="jump(-1)">Previous<br>Chapter</button><div class="info" role="button" tabindex="0" aria-label="Back to the page" onclick="go('read')"><b>${clock()}</b><strong>${esc(b.title)}</strong><strong id="lbl">${chInfo(b,`Page ${b.page+1}`)}</strong></div><button onclick="jump(1)">Next<br>Chapter</button></div>
@@ -485,29 +531,37 @@ function done(){
  <div class="acts"><button class="fb main" onclick="restart(${b.id})">Start over</button><button class="fb" onclick="go('home')">Back to library</button></div>
  </div>`;
 }
-const pg=()=>{const b=book();return b.pages[b.page].split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')};
+const pg=()=>{const b=book();return htmlHL(b.pages[b.page],0,hlsFor(b))};
 function notes(){
- return hdr("go('ctrl')",'Bookmark')+`<div class="body"><h2>Bookmarked pages</h2>${S.notes.length?S.notes.map((n,i)=>{const b=S.books.find(x=>x.id===n.b);return b?`<button class="note" onclick="S.cur=${n.b};book().page=${n.p};go('read')"><b>${esc(b.title)} · Page ${n.p+1}</b>${esc(b.pages[n.p].slice(0,110))}…</button>`:''}).join(''):'<p class="empty">Pages you save while reading appear here. Open a book, tap the center of the page, then choose Save Page.</p>'}</div>`;
+ const hl=[...S.hls].reverse();
+ return hdr("go('ctrl')",'Bookmark')+`<div class="body"><h2>Bookmarked pages</h2>${S.notes.length?S.notes.map((n,i)=>{const b=S.books.find(x=>x.id===n.b);return b?`<button class="note" onclick="S.cur=${n.b};book().page=${n.p};go('read')"><b>${esc(b.title)} · Page ${n.p+1}</b>${esc(b.pages[n.p].slice(0,110))}…</button>`:''}).join(''):'<p class="empty">Pages you save while reading appear here. Open a book, tap the center of the page, then choose Save Page.</p>'}
+ <h2>Highlights</h2>${hl.length?hl.map(h=>{const b=S.books.find(x=>x.id===h.b);return b?`<div class="hlrow"><button class="note" onclick="openHL('${h.id}')"><b><i class="hd hl-${h.c}"></i>${esc(b.title)} · Page ${h.p+1}</b>${esc(h.t)}</button><button class="hx" aria-label="Delete highlight" onclick="delHL('${h.id}')">${svg('trash')}</button></div>`:''}).join(''):'<p class="empty">Press and hold a word while reading, drag to select, then pick yellow, green or blue. Your highlights are saved here.</p>'}</div>`;
 }
+function openHL(id){const h=S.hls.find(x=>x.id===id);if(!h)return;S.cur=h.b;const b=book();if(!b)return;b.page=h.p;b.last=Date.now();S.jumpTok=h.a;save();go('read')}
+function delHL(id){S.hls=S.hls.filter(x=>x.id!==id);save();render();toast('Highlight deleted')}
 function text(){
  return hdr(`go('${S.setFrom==='rctrl'&&book()?'rctrl':'ctrl'}')`,'Settings')+`<div class="body"><h2>Text size</h2>
  <input class="slider" type="range" min="11" max="24" value="${S.size}" aria-label="Text size" oninput="S.size=+this.value;$('#pv').style.setProperty('--fs',S.size+'px');save()">
  <div class="text" id="pv" style="--fs:${S.size}px;padding:0;flex:none;cursor:default">The quick brown fox jumps over the lazy dog. Adjust until the page feels right.</div>
  <h2 style="margin-top:22px">Device frame</h2>
- <div class="frames" role="radiogroup" aria-label="Device frame color">${FR.map(([k,n])=>`<button class="fr${frameKey()===k?' on':''}" role="radio" aria-checked="${frameKey()===k}" onclick="setFrame('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
+ <div class="frames" role="radiogroup" aria-label="Device frame color">${FR.map(([k,n])=>`<button class="fr${frameSel()===k?' on':''}" role="radio" aria-checked="${frameSel()===k}" onclick="setFrame('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
  <button class="item" style="margin-top:14px" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
  <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
  <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>
- <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button></div>`;
+ <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button><p class="ver">Paper e-reader · Version ${VERSION}</p></div>`;
 }
-const FR=[['white','White'],['dark','Dark'],['gold','Shiny Gold'],['rose','Shiny Rose Gold'],['blue','Deep Blue']];
-const frameKey=()=>S.frame||(S.dark?'dark':'white');
+const FR=[['auto','Match Mode'],['white','White'],['dark','Dark'],['gold','Shiny Gold'],['rose','Shiny Rose Gold'],['blue','Deep Blue'],['green','Forest Green']];
+const frameSel=()=>S.frame||'auto';
+const frameKey=()=>{const f=frameSel();return f==='auto'?(S.dark?'dark':'white'):f};
 function setFrame(k){S.frame=k;save();render()}
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const V={home,books,ctrl,read,rctrl,track,chapters,notes,text,done};
 
 /* actions */
-function tap(e){const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;
+function tap(e){
+ if(getSelection().toString().trim())return;
+ if(S.hp){hidePal();return}
+ const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;
  if(x<.3)turn(-1);else if(x>.7)turn(1)}
 function turn(d){const b=book(),n=b.page+d;
  if(S.spK===b.id+'|'+b.page){
@@ -515,6 +569,34 @@ function turn(d){const b=book(),n=b.page+d;
   if(d<0&&S.sp>0){S.sp--;b.last=Date.now();S.pt='prev';return render()}}
  if(n<0)return toast('First page');if(n>=b.pages.length)return finish();
  b.page=n;b.last=Date.now();S.spK=b.id+'|'+n;S.sp=d>0?0:1e6;S.pt=d>0?'next':'prev';save();render()}
+/* highlighter */
+const PAL=`<div class="hlpal" role="toolbar" aria-label="Highlighter" onmousedown="event.preventDefault()"><button class="hl-y" aria-label="Yellow highlighter" onclick="hlAdd('y')"></button><button class="hl-g" aria-label="Green highlighter" onclick="hlAdd('g')"></button><button class="hl-b" aria-label="Blue highlighter" onclick="hlAdd('b')"></button><button class="er" aria-label="Remove highlight" onclick="hlErase()">${svg('x')}</button></div>`;
+function hidePal(){document.querySelector('.hlpal')?.remove();S.hp=null}
+function subOff(el,node,off,edge){const ps=[...el.querySelectorAll('p')];let base=0;
+ for(const p of ps){if(p.contains(node)){const g=document.createRange();g.selectNodeContents(p);g.setEnd(node,off);return base+g.toString().length}base+=p.textContent.length+2}
+ if(node===el){let x=0;for(let i=0;i<Math.min(off,ps.length);i++)x+=ps[i].textContent.length+2;return edge==='end'?Math.max(0,x-2):x}
+ return null}
+function checkSel(){
+ if(S.screen!=='read'||S.sheet)return hidePal();
+ const el=$('#txt'),sel=getSelection(),b=book();
+ if(!el||!b||!sel||!sel.rangeCount||sel.isCollapsed||S.subTxt==null)return hidePal();
+ const r=sel.getRangeAt(0);
+ if(!el.contains(r.startContainer)||!el.contains(r.endContainer))return hidePal();
+ const so=subOff(el,r.startContainer,r.startOffset,'start'),eo=subOff(el,r.endContainer,r.endOffset,'end');
+ if(so==null||eo==null)return hidePal();
+ let a=null,z=0,i=0,m;const re=/\S+/g,t=S.subTxt;
+ while((m=re.exec(t))){if(a===null&&m.index+m[0].length>so)a=i;if(m.index<eo)z=i+1;i++}
+ if(a===null||z<=a)return hidePal();
+ const tb=S.subTb||0;S.hp={a:a+tb,z:z+tb};
+ if(!$('.hlpal'))$('#scr').insertAdjacentHTML('beforeend',PAL)}
+let selT;document.addEventListener('selectionchange',()=>{clearTimeout(selT);selT=setTimeout(checkSel,160)});
+function hlAdd(c){const b=book(),h=S.hp;if(!b||!h)return;
+ const t=b.pages[b.page].split(/\s+/).filter(Boolean).slice(h.a,h.z).join(' ');
+ S.hls.push({id:Date.now()+'-'+Math.random().toString(36).slice(2,6),b:b.id,p:b.page,a:h.a,z:h.z,c,t:t.length>240?t.slice(0,240)+'…':t,at:Date.now()});
+ save();try{getSelection().removeAllRanges()}catch(e){}render();toast('Highlight saved to Bookmark')}
+function hlErase(){const b=book(),h=S.hp;if(!b||!h)return;const n=S.hls.length;
+ S.hls=S.hls.filter(x=>!(x.b===b.id&&x.p===b.page&&x.a<h.z&&x.z>h.a));
+ save();try{getSelection().removeAllRanges()}catch(e){}render();toast(S.hls.length<n?'Highlight removed':'No highlight there')}
 function finish(){const b=book();b.done=Date.now();save();go('done')}
 function restart(id){const b=S.books.find(x=>x.id===id);if(b){b.page=0;b.secs=0;b.vis=[];b.done=0}openBook(id)}
 const fmtT=n=>n<60?`${n}<small>sec</small>`:n<3600?`${Math.floor(n/60)}<small>min</small>`:`${Math.floor(n/3600)}<small>h</small> ${Math.floor(n%3600/60)}<small>m</small>`;
@@ -543,9 +625,12 @@ function render(){
  s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'');
  document.documentElement.dataset.theme=S.dark?'dark':'light';
+ S.hp=null;
  s.innerHTML=V[S.screen]();
+ if(S.screen==='home'&&S.q!==null){const rs=$('#res');if(rs)fillRes(rs,searchParts(S.q),S.q)}
  if(rg.includes(cur)){const bk=book();if(bk)layoutText(cur,bk)}
  if(S.sheet)s.insertAdjacentHTML('beforeend',sheet());
+ if(S.bmenu&&cur==='books')s.insertAdjacentHTML('beforeend',bmenu());
  if(prev!==cur){
   if(rg.includes(prev)&&rg.includes(cur))s.querySelector('.bar,.trk')?.classList.add('drop-in');
   else if(cur!=='chapters'){s.classList.add('enter-'+({read:'zoom',ctrl:'drop'}[cur]||'fade'));
@@ -581,7 +666,7 @@ sc.addEventListener('contextmenu',e=>{if(e.target.closest('[data-bid],[data-lp]'
 let swOn=false,swX=0,swY=0,swAt=0;
 sc.addEventListener('pointerdown',e=>{swOn=S.screen==='read'&&!!S.gest&&!!e.target.closest('.text');swX=e.clientX;swY=e.clientY});
 sc.addEventListener('pointercancel',()=>{swOn=false});
-sc.addEventListener('pointerup',e=>{if(!swOn)return;swOn=false;const dx=e.clientX-swX,dy=e.clientY-swY;
+sc.addEventListener('pointerup',e=>{if(!swOn)return;swOn=false;if(getSelection().toString().trim())return;const dx=e.clientX-swX,dy=e.clientY-swY;
  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5){swAt=Date.now();turn(dx<0?1:-1)}});
 
 /* swipe left on PaperHome resumes the last book */
@@ -590,6 +675,14 @@ sc.addEventListener('pointerdown',e=>{sOn=!e.target.closest('.row,input');sx=e.c
 sc.addEventListener('pointerup',e=>{if(!sOn)return;sOn=false;const dx=e.clientX-sx,dy=e.clientY-sy;
  if(S.gest&&S.screen==='home'&&S.q===null&&!S.sheet&&!lpDone&&dx<-70&&Math.abs(dx)>Math.abs(dy)*1.6){
   const b=[...S.books].filter(x=>x.last).sort((a,c)=>c.last-a.last)[0]||book();if(!b)return toast('No book to resume');openBook(b.id)}});
+/* swipe down from the top of PaperHome opens Paper Controls */
+let dnOn=false,dnX=0,dnY=0;
+sc.addEventListener('pointerdown',e=>{const r=sc.getBoundingClientRect();
+ const inTop=!!e.target.closest('.top')||(e.clientY-r.top<100&&($('.body')?.scrollTop||0)===0);
+ dnOn=S.screen==='home'&&!!S.gest&&!S.sheet&&inTop&&!e.target.closest('input');dnX=e.clientX;dnY=e.clientY});
+sc.addEventListener('pointermove',e=>{if(!dnOn)return;const dx=e.clientX-dnX,dy=e.clientY-dnY;
+ if(dy>56&&dy>Math.abs(dx)*1.5){dnOn=false;clearTimeout(lpT);swAt=Date.now();go('ctrl')}});
+['pointerup','pointercancel'].forEach(n=>sc.addEventListener(n,()=>{dnOn=false}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.screen==='home'&&S.q!==null)closeSearch()});
 
 (async()=>{
@@ -597,7 +690,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.screen==='home'&&
  if(st)Object.assign(S,st);S.timeout=0;
  if(!S.books.length){
   const lo='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus nunc, semper et dolor at, tincidunt sagittis enim. Sed sollicitudin dolor id velit condimentum scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tincidunt tortor, at accumsan metus volutpat vel.';
-  S.books.push({id:1,title:'Sample: Reading Paper',pages:Array.from({length:24},(_,i)=>i===0?'Welcome to Paper. Tap the right side of a page to go forward, the left side to go back, and the center for reading controls. Add your own books from the home screen.\n\n'+lo:lo+'\n\n'+lo.split('. ').reverse().join('. ')),page:0,last:0,added:Date.now()});
+  S.books.push({id:1,title:'Sample: Reading Paper',pages:Array.from({length:24},(_,i)=>i===0?'Welcome to Paper. Tap the right side of a page to go forward, the left side to go back, and the center for reading controls. Add your own books from the home screen. To highlight, press and hold a word, drag to select, then pick a color.\n\n'+lo:lo+'\n\n'+lo.split('. ').reverse().join('. ')),page:0,last:0,added:Date.now()});
  }
  S.screen='home';render();
 })();
