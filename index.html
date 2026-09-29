@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 8.1</title>
+<title>Paper e-reader 8.7</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -84,12 +84,12 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 
 .hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--dc,#c8c8c8),color-mix(in srgb,var(--dc,#c8c8c8) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
 .hw::after{content:"";position:absolute;inset:-9px}
-.hw-top{top:-9px;right:64px;width:62px;height:8px;border-radius:5px 5px 0 0;--hwd:180deg}
-.hw-side{right:-9px;top:24%;width:8px;height:84px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#ffa347,#f4711a 55%,#c9560a)}
-.hw-back{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0}
-.hw-back:active{transform:translateX(-2px);filter:brightness(.85)}
+.hw-top{top:-9px;right:64px;width:62px;height:8px;border-radius:5px 5px 0 0;--hwd:180deg;background:linear-gradient(180deg,#ffa347,#f4711a 55%,#c9560a)}
+.hw-side{right:-9px;top:24%;width:8px;height:84px;border-radius:0 5px 5px 0}
+.hw-home{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#7dbcff,#3d8bf0 55%,#2467c4)}
+.hw-home:active{transform:translateX(-2px);filter:brightness(.85)}
 .hw-top:active{transform:translateY(2px);filter:brightness(.85)}.hw-side:active{transform:translateX(-2px);filter:brightness(.85)}
-.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side,.full .hw-back{right:0;border-radius:5px 0 0 5px}
+.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side,.full .hw-home{right:0;border-radius:5px 0 0 5px}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
 .bk{position:absolute;inset:0;border-radius:inherit;background:var(--dg,var(--g-silver));overflow:hidden;display:none;color:var(--dink,#222)}
@@ -271,9 +271,9 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 .hd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style></head><body>
 <div class="device"><div class="screen" id="scr"></div><div class="bk" id="bk"></div>
-<button class="hw hw-top" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
-<button class="hw hw-side" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
-<button class="hw hw-back" id="hwBack" aria-label="Back button" title="Back" onclick="hwPress('k')"></button></div>
+<button class="hw hw-top" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
+<button class="hw hw-side" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
+<button class="hw hw-home" id="hwHome" aria-label="Home button" title="Home" onclick="hwPress('h')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
@@ -299,7 +299,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='8.1';
+const VERSION='8.7';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -368,7 +368,7 @@ const date=()=>new Date().toLocaleDateString('en-US',{weekday:'short',month:'sho
 let tt;function toast(m,ms){clearTimeout(tt);let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';$('#scr').append(t)}t.textContent=m;tt=setTimeout(()=>t.remove(),ms||1600)}
 function go(s){
  S.dmenu=false;S.bmenu=false;if(s!=='notes')S.hlEdit=null;
- if(s==='text')S.setFrom=S.screen==='rctrl'?'rctrl':'ctrl';
+ if(s==='text'){S.setFrom=S.screen==='rctrl'?'rctrl':'ctrl';S.setPage=null}
  if(s!=='home')S.q=null;
  if(s==='ctrl'){if(['read','rctrl','track'].includes(S.screen)&&book())S.ctrlFrom='read';else if(S.screen==='home')S.ctrlFrom='home';else if(S.screen==='books')S.ctrlFrom='books'}
 
@@ -608,11 +608,21 @@ function saveHN(id){const h=S.hls.find(x=>x.id===id),t=$('#hn');if(!h||!t)return
  if(v)h.n=v;else delete h.n;S.hlEdit=null;save();render();toast(v?'Note saved':'Note removed')}
 function openHL(id){const h=S.hls.find(x=>x.id===id);if(!h)return;S.cur=h.b;const b=book();if(!b)return;b.page=h.p;b.last=Date.now();S.jumpTok=h.a;save();go('read')}
 function delHL(id){if(S.hlEdit===id)S.hlEdit=null;S.hls=S.hls.filter(x=>x.id!==id);save();render();toast('Highlight deleted')}
-function text(){
- return hdr(`go('${S.setFrom==='rctrl'&&book()?'rctrl':'ctrl'}')`,'Settings')+`<div class="body"><h2>Text size</h2>
+const SETP={
+ reading:['Reading','Text size, status bar and reading behavior.',()=>`<h2>Text size</h2>
  <input class="slider" type="range" min="11" max="24" value="${S.size}" aria-label="Text size" oninput="S.size=+this.value;$('#pv').style.setProperty('--fs',S.size+'px');save()">
  <div class="text" id="pv" style="--fs:${S.size}px;padding:0;flex:none;cursor:default">The quick brown fox jumps over the lazy dog. Adjust until the page feels right.</div>
- <h2 style="margin-top:22px">Bezel color</h2>
+ <h2>Controls &amp; status bar</h2>
+ <p class="chsub">Where the Paper Controls button and the status bar (clock, book, chapter, page) sit. Handy on a small PaperDevice.</p>
+ <div class="chips" role="radiogroup" aria-label="Status bar position"><button class="chip${S.hpos!=='bottom'?' on':''}" role="radio" aria-checked="${S.hpos!=='bottom'}" onclick="setHpos('top')">Top (default)</button><button class="chip${S.hpos==='bottom'?' on':''}" role="radio" aria-checked="${S.hpos==='bottom'}" onclick="setHpos('bottom')">Bottom</button></div>
+ <button class="item" style="margin-top:14px" onclick="tog('nod')">${svg('eye')} No Distraction <span>${S.nod?'On':'Off'}</span></button>
+ <p class="chsub" style="margin-top:-2px">Hides the status bar after 30 seconds of not using it. Only the P button stays. Tap where the bar was to bring it back.</p>
+ <button class="item" onclick="toggleGest()">${svg('gest')} Gestures <span>${S.gest?'On':'Off'}</span></button>`],
+ display:['Display','Night mode, dark mode, covers and animations.',()=>` <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
+ <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
+ <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button>
+ <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>`],
+ look:['Appearance','Colors and stickers for your PaperDevice.',()=>` <h2>Bezel color</h2>
  <div class="frames" role="radiogroup" aria-label="Bezel color">${BZ.map(([k,n])=>`<button class="fr${bezSel()===k?' on':''}" role="radio" aria-checked="${bezSel()===k}" onclick="setBezel('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
  <h2 style="margin-top:22px">Device color</h2>
  <p class="chsub">Shown on the rim, the buttons and the back of your PaperDevice.</p>
@@ -624,8 +634,8 @@ function text(){
  <h2 style="margin-top:22px">Back of device</h2>
  <p class="chsub">Flip your PaperDevice over to place stickers on the back. There are 10 to choose from.</p>
  <button class="item" onclick="flipTo(true)">${svg('shot')} Flip to the back <span>${S.stk.length} ${S.stk.length===1?'sticker':'stickers'}</span></button>
- ${S.stk.length?`<button class="item" onclick="clearStk()">${svg('trash')} ${S.stkClr?'Tap again to remove all':'Remove all stickers'}</button>`:''}
- <h2 style="margin-top:22px">Bezels &amp; screen</h2><div class="dims">
+ ${S.stk.length?`<button class="item" onclick="clearStk()">${svg('trash')} ${S.stkClr?'Tap again to remove all':'Remove all stickers'}</button>`:''}`],
+ size:['Size & Position','How big your PaperDevice is and where it sits.',()=>` <h2>Bezels &amp; screen</h2><div class="dims">
  ${Object.entries(DIM).map(([k,[mn,mx,id,n]])=>`<div class="lab"><label for="${id}">${n}</label><span id="dl-${k}">${k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px'}</span></div><input class="slider" id="${id}" type="range" min="${mn}" max="${mx}" value="${S[k]}" aria-label="${n}" oninput="setDim('${k}',this.value)">`).join('')}
  <button class="item" onclick="resetDim()">Reset size &amp; bezels</button></div>
  <h2 style="margin-top:22px">Device Alignment</h2>
@@ -633,26 +643,27 @@ function text(){
  <div class="agrid" role="group" aria-label="Alignment presets">${[0,50,100].map(y=>[0,50,100].map(x=>`<button data-x="${x}" data-y="${y}" class="${S.ax===x&&S.ay===y?'on':''}" aria-label="Align ${['top','middle','bottom'][y/50]} ${['left','center','right'][x/50]}" onclick="setAlign(${x},${y})"><i></i></button>`).join('')).join('')}</div>
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
- <button class="item" onclick="setAlign(50,50)">Center device</button></div>
- <h2 style="margin-top:22px">Hardware buttons</h2>
- <p class="chsub">The PaperButton is on top of the device. On its right side are the PaperAction and, just under it, the Back button, which takes you back one step and can't be customized.</p>
- <div class="fl"><small>PaperButton opens</small><div class="chips"><button class="chip${S.pbtn!=='lib'?' on':''}" aria-pressed="${S.pbtn!=='lib'}" onclick="setHw('pbtn','ctrl')">PaperControls</button><button class="chip${S.pbtn==='lib'?' on':''}" aria-pressed="${S.pbtn==='lib'}" onclick="setHw('pbtn','lib')">Home</button></div></div>
- ${S.pbtn!=='lib'?`<button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>`:''}
- <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>
- <h2 style="margin-top:22px">Controls &amp; status bar</h2>
- <p class="chsub">Where the Paper Controls button and the status bar (clock, book, chapter, page) sit. Handy on a small PaperDevice.</p>
- <div class="chips" role="radiogroup" aria-label="Status bar position"><button class="chip${S.hpos!=='bottom'?' on':''}" role="radio" aria-checked="${S.hpos!=='bottom'}" onclick="setHpos('top')">Top (default)</button><button class="chip${S.hpos==='bottom'?' on':''}" role="radio" aria-checked="${S.hpos==='bottom'}" onclick="setHpos('bottom')">Bottom</button></div>
- <button class="item" style="margin-top:14px" onclick="tog('nod')">${svg('eye')} No Distraction <span>${S.nod?'On':'Off'}</span></button>
- <p class="chsub" style="margin-top:-2px">Hides the status bar after 30 seconds of not using it. Only the P button stays. Tap where the bar was to bring it back.</p>
- <button class="item" onclick="toggleGest()">${svg('gest')} Gestures <span>${S.gest?'On':'Off'}</span></button>
- <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
- <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
- <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>
- <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button><h2 style="margin-top:22px">Experimental</h2>
- <p class="chsub">Off by default and may not work everywhere.</p>
- <button class="item" onclick="tog('batt')">${svg('wifi')} Battery percentage <span>${S.batt?'On':'Off'}</span></button>
- <p class="chsub" style="margin-top:-2px">Shows your phone's battery next to the date in PaperControls. ${navigator.getBattery?'':'This browser does not support it (Safari on iPhone does not).'}</p>
+ <button class="item" onclick="setAlign(50,50)">Center device</button></div>`],
+ hw:['Hardware Buttons','Set up the buttons on your PaperDevice.',()=>` <h2>Hardware buttons</h2>
+ <p class="chsub">The PaperAction (orange) is on top of the device. On its right side are the PaperButton, which opens PaperControls, and just under it the Home button (blue), which takes you to Home and can't be customized.</p>
+ <button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>
+ <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>`],
+ exp:['Experimental','Off by default and may not work everywhere.',()=>` <button class="item" onclick="tog('batt')">${svg('wifi')} Battery percentage <span>${S.batt?'On':'Off'}</span></button>
+ <p class="chsub" style="margin-top:-2px">Shows your phone's battery next to the date in PaperControls. ${navigator.getBattery?'':'This browser does not support it (Safari on iPhone does not).'}</p>`],
+};
+function setPg(p){S.setPage=p;render()}
+function text(){
+ const pg=SETP[S.setPage];
+ if(!pg)return hdr(`go('${S.setFrom==='rctrl'&&book()?'rctrl':'ctrl'}')`,'Settings')+`<div class="body"><h2>Settings</h2><p class="chsub">Choose a section.</p>
+ <button class="item" onclick="setPg('reading')">${svg('notes')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Reading</b><small style="color:var(--mut);font-weight:400;font-size:11px">Text size, status bar, gestures</small></div><span aria-hidden="true">›</span></button>
+ <button class="item" onclick="setPg('display')">${svg('disp')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Display</b><small style="color:var(--mut);font-weight:400;font-size:11px">Night, dark mode, covers, animations</small></div><span aria-hidden="true">›</span></button>
+ <button class="item" onclick="setPg('look')">${svg('eye')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Appearance</b><small style="color:var(--mut);font-weight:400;font-size:11px">Device, bezel and background colors</small></div><span aria-hidden="true">›</span></button>
+ <button class="item" onclick="setPg('size')">${svg('full')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Size & Position</b><small style="color:var(--mut);font-weight:400;font-size:11px">Bezels, screen size, alignment</small></div><span aria-hidden="true">›</span></button>
+ <button class="item" onclick="setPg('hw')">${svg('sett')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Hardware Buttons</b><small style="color:var(--mut);font-weight:400;font-size:11px">PaperAction and buttons</small></div><span aria-hidden="true">›</span></button>
+ <button class="item" onclick="setPg('exp')">${svg('wifi')}<div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left"><b>Experimental</b><small style="color:var(--mut);font-weight:400;font-size:11px">Battery percentage</small></div><span aria-hidden="true">›</span></button>
  <p class="ver">Paper e-reader · Version ${VERSION}</p></div>`;
+ return hdr(`setPg(null)`,pg[0])+`<div class="body"><button class="back" onclick="setPg(null)">‹ Settings</button><h2>${pg[0]}</h2><p class="chsub">${pg[1]}</p>
+ ${pg[2]()}</div>`;
 }
 const BZ=[['auto','Match Mode'],['white','White'],['dark','Dark']];
 const DEV={silver:{n:'Silver',g:'var(--g-silver)',base:'#c8c8c8',ink:'#262626'},
@@ -773,7 +784,7 @@ function hlErase(){const b=book(),h=S.hp;if(!b||!h)return;const n=S.hls.length;
  S.hls=S.hls.filter(x=>!(x.b===b.id&&x.p===b.page&&x.a<h.z&&x.z>h.a));
  save();try{getSelection().removeAllRanges()}catch(e){}render();toast(S.hls.length<n?'Highlight removed':'No highlight there')}
 /* hardware buttons */
-const logoOn=()=>S.plogo!==false||S.pbtn!=='ctrl';
+const logoOn=()=>S.plogo!==false;
 const PACT=[['next','Next page'],['prev','Previous page'],['dark','Toggle Light/Dark mode'],['nod','Start No Distraction'],['chap','Next chapter'],['save','Save page'],['bm','Open Bookmarks'],['scr','Turn screen on/off']];
 const hwMsg=m=>toast(m,2000);
 function setHw(k,v){S[k]=v;save();render()}
@@ -781,28 +792,17 @@ function glow(side,col,id){const d=$('.device'),sc=$('#scr'),bt=document.getElem
  const a=sc.getBoundingClientRect(),b=bt.getBoundingClientRect(),top=side==='top',
   p=top?b.left+b.width/2-a.left:b.top+b.height/2-a.top,half=(top?b.width:b.height)/2;
  const g=document.createElement('div');g.className='glow '+side;g.style.setProperty('--gc',col);g.style.setProperty('--p',p+'px');g.style.setProperty('--r',(half+24)+'px');d.append(g);setTimeout(()=>g.remove(),800)}
-const NAMES={home:'Home',books:'Library',ctrl:'PaperControls',read:'the page',rctrl:'the page',track:'Reading tracker',chapters:'Chapters',notes:'Bookmark',text:'Settings',done:'Home'};
-function backNav(){
- if(S.sheet||S.confirm||S.rename||S.bmenu||S.dmenu||S.hlEdit){S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;render();return 'Back - Closed'}
- const sc=S.screen,b=book();let t=null;
- if(sc==='home'){if(S.q!==null){closeSearch();return 'Back - Home'}return 'Back - Already on Home'}
- if(sc==='books'||sc==='done')t='home';
- else if(sc==='ctrl'){closeCtrl();return 'Back'}
- else if(sc==='read')t=['home','books','notes'].includes(S.readFrom)?S.readFrom:'home';
- else if(sc==='rctrl'||sc==='chapters')t='read';
- else if(sc==='track')t=b&&hasCh(b)?'chapters':'read';
- else if(sc==='notes')t='ctrl';
- else if(sc==='text')t=S.setFrom==='rctrl'&&b?'rctrl':'ctrl';
- else t='home';
- go(t);return 'Back - '+(NAMES[t]||'')}
 function hwPress(w){
  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
- glow(w==='b'?'top':'right',w==='a'?'#f4711a':'#5aa9ff',w==='b'?'hwB':w==='a'?'hwA':'hwBack');
+ glow(w==='a'?'top':'right',w==='a'?'#f4711a':w==='h'?'#5aa9ff':'#7b7f95',w==='a'?'hwA':w==='h'?'hwHome':'hwB');
  if(S.off){S.off=false;render();return hwMsg(w==='a'&&(S.pact||'next')==='scr'?'PaperAction - Screen on':'Screen on')}
- if(w==='k')return hwMsg(backNav());
+ if(w==='h'){
+  if(S.screen==='home'&&S.q!==null){closeSearch();return hwMsg('Home')}
+  S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;
+  if(S.screen==='home'){render();return hwMsg('Home - Already here')}
+  go('home');return hwMsg('Home')}
  S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;
  if(w==='b'){
-  if(S.pbtn==='lib'){go('home');return hwMsg('PaperButton - Home')}
   if(S.screen==='ctrl'){closeCtrl();return hwMsg('PaperButton - Back')}
   go('ctrl');return hwMsg('PaperButton - PaperControls')}
  const a=S.pact||'next',name=(PACT.find(x=>x[0]===a)||PACT[0])[1],pre='PaperAction - ',
