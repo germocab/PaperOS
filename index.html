@@ -73,6 +73,7 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .frames{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 4px;margin:8px 0}
 .fr{background:none;border:0;color:var(--ink);font:500 10px/1.25 'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;padding:4px 0;text-align:center}
 .fr.on{font-weight:700}.sw{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 1px #0003,inset 0 1px 2px #fff8}
+.wcust{position:relative;overflow:hidden;cursor:pointer;background:conic-gradient(#f66,#fd6,#6f9,#6cf,#c6f,#f66)}.wcust input{position:absolute;inset:-6px;width:60px;height:60px;opacity:0;cursor:pointer}
 .fr.on .sw{box-shadow:0 0 0 2px var(--screen),0 0 0 4px var(--ink)}
 .sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.dims{margin:8px 0 4px}.dims .lab{display:flex;justify-content:space-between;font:500 13px 'DM Sans';margin-top:12px}.dims .lab span{color:var(--mut)}.dims .slider{margin:4px 0 2px}
 .agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:150px;margin:8px auto 4px}
@@ -307,7 +308,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,wbg:S.wbg});
 
 /* pagination */
 function paginate(text){
@@ -616,6 +617,10 @@ function text(){
  <h2 style="margin-top:22px">Device color</h2>
  <p class="chsub">Shown on the rim, the buttons and the back of your PaperDevice.</p>
  <div class="frames" role="radiogroup" aria-label="Device color">${Object.entries(DEV).map(([k,c])=>`<button class="fr${S.dcol===k?' on':''}" role="radio" aria-checked="${S.dcol===k}" onclick="setDcol('${k}')"><i class="sw" style="background:${c.g}"></i>${c.n}</button>`).join('')}</div>
+ <h2 style="margin-top:22px">Background</h2>
+ <p class="chsub">The color behind your PaperDevice.</p>
+ <div class="frames" role="radiogroup" aria-label="Background color">${WBG.map(([n,c])=>`<button class="fr${(S.wbg||null)===c?' on':''}" role="radio" aria-checked="${(S.wbg||null)===c}" onclick="setWbg(${c?`'${c}'`:'null'})"><i class="sw" style="background:${c||'#6b6b6b'}"></i>${n}</button>`).join('')}
+ <label class="fr${S.wbg&&!WBG.some(x=>x[1]===S.wbg)?' on':''}"><i class="sw wcust"><input type="color" value="${S.wbg||'#6b6b6b'}" aria-label="Custom background color" oninput="setWbg(this.value,true)"></i>Custom</label></div>
  <h2 style="margin-top:22px">Back of device</h2>
  <p class="chsub">Flip your PaperDevice over to place stickers on the back. There are 10 to choose from.</p>
  <button class="item" onclick="flipTo(true)">${svg('shot')} Flip to the back <span>${S.stk.length} ${S.stk.length===1?'sticker':'stickers'}</span></button>
@@ -719,6 +724,11 @@ const bezSel=()=>BZ.some(x=>x[0]===S.bezel)?S.bezel:'auto';
 const frameKey=()=>{const b=bezSel();return b==='auto'?(S.dark?'dark':'white'):b};
 function setBezel(k){S.bezel=k;save();render()}
 function setDcol(k){S.dcol=k;save();render()}
+const WBG=[['Gray',null],['Charcoal','#2b2b2e'],['Black','#000000'],['White','#f2f2f2'],['Sand','#d9c9a8'],['Sage','#8fa88f'],['Sky','#7fa6c9'],['Rose','#c99aa5']];
+function applyWeb(){const e=document.documentElement;
+ if(/^#[0-9a-f]{6}$/i.test(S.wbg||''))e.style.setProperty('--bg',S.wbg);else e.style.removeProperty('--bg');
+ const m=document.querySelector('meta[name=theme-color]');if(m)m.content=S.wbg||'#111111'}
+function setWbg(c,noRender){S.wbg=c;applyWeb();save();if(!noRender)render()}
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const V={home,books,ctrl,read,rctrl,track,chapters,notes,text,done};
 
@@ -845,7 +855,7 @@ function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
  s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(nodOK()&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'')+(S.back?' isback':'');
- applyDev();renderBack();
+ applyDev();renderBack();applyWeb();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
  S.hp=null;
  s.innerHTML=V[S.screen]();
