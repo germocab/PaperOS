@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 9.0</title>
+<title>Paper e-reader 9.1</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -84,11 +84,11 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 
 .hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--dc,#c8c8c8),color-mix(in srgb,var(--dc,#c8c8c8) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
 .hw::after{content:"";position:absolute;inset:-9px}
-.hw-top{top:-9px;right:64px;width:62px;height:8px;border-radius:5px 5px 0 0;--hwd:180deg;background:linear-gradient(180deg,#ffa347,#f4711a 55%,#c9560a)}
-.hw-home{right:-9px;top:24%;width:8px;height:76px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#4a4a4a,#151515 55%,#000);box-shadow:inset 0 1px 0 #fff3,0 1px 3px #0008}
+.hw-act{right:-9px;top:24%;width:8px;height:84px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#ffa347,#f4711a 55%,#c9560a)}
+.hw-home{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#4a4a4a,#151515 55%,#000);box-shadow:inset 0 1px 0 #fff3,0 1px 3px #0008}
 .hw-home:active{transform:translateX(-2px);filter:brightness(.85)}
-.hw-top:active{transform:translateY(2px);filter:brightness(.85)}
-.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-home{right:0;border-radius:5px 0 0 5px}
+.hw-act:active{transform:translateX(-2px);filter:brightness(.85)}
+.full .hw{display:none}
 .chip:disabled{opacity:.45;cursor:default}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
@@ -245,6 +245,16 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .enter-fade>*{animation:fade .35s both}
 .stag .body>*{animation:rise .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*45ms + 60ms)}
 .drop-in{animation:bar .4s cubic-bezier(.2,.9,.2,1) both}
+.flipwrap{position:absolute;perspective:1600px;pointer-events:none;z-index:6}
+.flipwrap::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.28),transparent 70%);opacity:0;animation:pfs .7s ease-in-out both}
+.flipwrap .pg{position:absolute;inset:0;margin:0;background:var(--screen);transform-origin:left center;backface-visibility:hidden;-webkit-backface-visibility:hidden;cursor:default;box-shadow:0 0 18px rgba(0,0,0,.25)}
+.flipwrap .pg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.3),rgba(0,0,0,0) 65%);opacity:0;animation:pfs .7s ease-in-out both}
+.flipwrap.next .pg{animation:pfn .7s cubic-bezier(.45,.05,.3,1) both}
+.flipwrap.prev .pg.flipin{animation:pfp .7s cubic-bezier(.45,.05,.3,1) both;z-index:2}
+.flipwrap.prev .pg.under{z-index:1;box-shadow:none}.flipwrap.prev .pg.under::after{display:none}
+@keyframes pfn{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes pfp{from{transform:rotateY(-180deg)}to{transform:rotateY(0)}}
+@keyframes pfs{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
 .turn-next{--tx:26px;animation:tn .32s cubic-bezier(.2,.8,.2,1) both}
 .turn-prev{--tx:-26px;animation:tn .32s cubic-bezier(.2,.8,.2,1) both}
 .scrim{position:absolute;inset:0;background:#0006;z-index:7}
@@ -271,7 +281,7 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 .hd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style></head><body>
 <div class="device"><div class="screen" id="scr"></div><div class="bk" id="bk"></div>
-<button class="hw hw-top" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
+<button class="hw hw-act" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
 <button class="hw hw-home" id="hwHome" aria-label="Home, Back or PaperControls button" title="Home / Back / PaperControls" onclick="hwPress('h')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
@@ -298,7 +308,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='9.0';
+const VERSION='9.1';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -307,7 +317,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,wbg:S.wbg,hmode:S.hmode});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,wbg:S.wbg,hmode:S.hmode,flip:S.flip});
 
 /* pagination */
 function paginate(text){
@@ -620,7 +630,9 @@ const SETP={
  display:['Display','Night mode, dark mode, covers and animations.',()=>` <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
  <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
  <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button>
- <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>`],
+ <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>
+ <button class="item" onclick="tog('flip')">${svg('notes')} Page flip <span>${S.flip?'On':'Off'}</span></button>
+ <p class="chsub" style="margin-top:-2px">Pages turn like a real book while you read. Off by default. It needs Animations to be on.</p>`],
  look:['Appearance','Colors and stickers for your PaperDevice.',()=>` <h2>Bezel color</h2>
  <div class="frames" role="radiogroup" aria-label="Bezel color">${BZ.map(([k,n])=>`<button class="fr${bezSel()===k?' on':''}" role="radio" aria-checked="${bezSel()===k}" onclick="setBezel('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
  <h2 style="margin-top:22px">Device color</h2>
@@ -643,7 +655,7 @@ const SETP={
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>`],
- hw:['Hardware Buttons','Which button is which on your PaperDevice.',()=>hwGuide()+`<h2 style="margin-top:22px">Black button</h2>
+ hw:['Hardware Buttons','Which button is which on your PaperDevice. Both sit on the right side and are hidden in Full View.',()=>hwGuide()+`<h2 style="margin-top:22px">Black button</h2>
  <div class="fl"><small>Works as</small><div class="chips" role="radiogroup" aria-label="Black button works as">${[['home','Home'],['back','Back'],['ctrl','PaperControls']].map(([k,n])=>`<button class="chip${hmodeEff()===k?' on':''}" role="radio" aria-checked="${hmodeEff()===k}" ${S.plogo===false?'disabled':''} onclick="setHw('hmode','${k}')">${n}</button>`).join('')}</div></div>
  <p class="chsub">${S.plogo===false?'The P button is hidden, so the black button works as PaperControls on Home and while reading. In other places it follows your choice.':'PaperControls only opens on Home or while reading.'}</p>
  <button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it on Home and while reading. The black button then becomes your PaperControls button. In reading you can also tap the center of a page.</p>
@@ -656,16 +668,16 @@ function hwGuide(){
  const pa=(PACT.find(x=>x[0]===(S.pact||'next'))||PACT[0])[1],m=hmodeEff(),
   nm={home:'Home button',back:'Back button',ctrl:'PaperControls button'}[m],
   ds={home:'Takes you straight to Home from anywhere.',back:'Takes you back to the previous page.',ctrl:'Opens PaperControls on Home or while reading. Press it again to close them.'}[m]+(S.plogo===false?' Set automatically because the P button is hidden.':'');
- const B=[['#f4711a','PaperAction','Top edge','Does what you choose below. Right now: '+pa+'.','Customizable'],
-  ['#111','Black button · '+nm,'Right side',ds,'Customizable']];
+ const B=[['#f4711a','PaperAction','Right side, upper','Does what you choose below. Right now: '+pa+'.','Customizable'],
+  ['#111','Black button · '+nm,'Right side, lower',ds,'Customizable']];
  return `<svg viewBox="0 0 400 260" role="img" aria-label="Diagram of the PaperDevice hardware buttons" style="width:100%;height:auto;display:block;margin:4px 0 12px">
  <rect x="30" y="34" width="170" height="210" rx="30" fill="${(DEV[S.dcol]||DEV.silver).base}" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
  <rect x="44" y="48" width="142" height="182" rx="20" fill="var(--screen)" stroke="currentColor" stroke-opacity=".25"/>
- <rect x="92" y="26" width="52" height="8" rx="3" fill="#f4711a"/>
- <rect x="200" y="84" width="8" height="70" rx="3" fill="#111" stroke="currentColor" stroke-opacity=".5"/>
- <g stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" fill="none"><path d="M118 26V14H150"/><path d="M208 119H232"/></g>
+ <rect x="200" y="70" width="8" height="64" rx="3" fill="#f4711a"/>
+ <rect x="200" y="150" width="8" height="42" rx="3" fill="#111" stroke="currentColor" stroke-opacity=".5"/>
+ <g stroke="currentColor" stroke-opacity=".45" stroke-width="1.2" fill="none"><path d="M208 102H232"/><path d="M208 171H232"/></g>
  <g fill="currentColor" font-family="DM Sans,system-ui,sans-serif" font-size="13" font-weight="700">
- <text x="154" y="18" fill="#f4711a">PaperAction</text><text x="238" y="117">Black button</text><text x="238" y="134" font-size="11" font-weight="500" opacity=".75">${nm.replace(' button','')}</text></g></svg>
+ <text x="238" y="106" fill="#f4711a">PaperAction</text><text x="238" y="170">Black button</text><text x="238" y="187" font-size="11" font-weight="500" opacity=".75">${nm.replace(' button','')}</text></g></svg>
  `+B.map(([col,n,pos,d,tag])=>`<div style="display:flex;gap:12px;align-items:flex-start;background:var(--btn);border-radius:12px;padding:12px;margin-bottom:8px"><i class="sw" style="flex:none;width:14px;height:34px;border-radius:5px;background:${col};box-shadow:0 0 0 1px #0004"></i><div style="flex:1;min-width:0"><b style="font:700 13px 'DM Sans',sans-serif">${n}</b> <small style="color:var(--mut);font-size:11px">· ${pos}</small><div style="font-size:12px;line-height:1.45;margin-top:2px">${d}</div><small style="color:var(--mut);font-size:11px">${tag}</small></div></div>`).join('')}
 function setPg(p){S.setPage=p;render()}
 function text(){
@@ -826,7 +838,7 @@ function backNav(){
  go(t);return 'Back - '+(NAMES[t]||'')}
 function hwPress(w){
  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
- glow(w==='a'?'top':'right',w==='a'?'#f4711a':'#9aa0b5',w==='a'?'hwA':'hwHome');
+ if(!S.full)glow('right',w==='a'?'#f4711a':'#9aa0b5',w==='a'?'hwA':'hwHome');
  if(S.off){S.off=false;render();return hwMsg(w==='a'&&(S.pact||'next')==='scr'?'PaperAction - Screen on':'Screen on')}
  if(w==='h'&&hmodeEff()==='back')return hwMsg(backNav());
  if(w==='h'&&hmodeEff()==='ctrl'){
@@ -886,8 +898,16 @@ const battTxt=()=>{if(!S.batt)return'';if(!navigator.getBattery)return' · Batte
 function battInit(){if(battObj||!navigator.getBattery)return;
  navigator.getBattery().then(b=>{battObj=b;const u=()=>{S.bl=Math.round(b.level*100);S.bch=b.charging;const e=$('#batt');if(e)e.textContent=battTxt()};
   ['levelchange','chargingchange'].forEach(n=>b.addEventListener(n,u));u()}).catch(()=>{S.bl=null;const e=$('#batt');if(e)e.textContent=' · Battery N/A'})}
+function startFlip(fl){const s=$('#scr'),t=$('.text');if(!s||!t)return;
+ const a=s.getBoundingClientRect(),r=t.getBoundingClientRect(),w=document.createElement('div');
+ w.className='flipwrap '+fl.dir;w.style.cssText=`left:${r.left-a.left}px;top:${r.top-a.top}px;width:${r.width}px;height:${r.height}px`;
+ const prep=n=>{n.removeAttribute('id');n.removeAttribute('onclick');n.className='text pg';return n};
+ if(fl.dir==='next')w.append(prep(fl.old));
+ else{const u=prep(fl.old);u.classList.add('under');const f=prep(t.cloneNode(true));f.classList.add('flipin');w.append(u,f)}
+ s.append(w);setTimeout(()=>w.remove(),780)}
 function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
+ let fl=null;if(S.pt&&S.flip&&S.anim&&cur==='read'&&prev==='read'&&!matchMedia('(prefers-reduced-motion:reduce)').matches){const o=$('.text');if(o)fl={old:o.cloneNode(true),dir:S.pt}}
  s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(nodOK()&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'')+(S.back?' isback':'');
  applyDev();renderBack();applyWeb();
@@ -903,7 +923,7 @@ function render(){
   else if(cur!=='chapters'){s.classList.add('enter-'+({read:'zoom',ctrl:'drop'}[cur]||'fade'));
    if(['home','ctrl','notes','text'].includes(cur)){s.classList.add('stag');s.querySelectorAll('.body>*').forEach((e,i)=>e.style.setProperty('--i',i))}}
  }
- if(S.pt){$('.text')?.classList.add('turn-'+S.pt);S.pt=null}
+ if(S.pt){if(fl)startFlip(fl);else $('.text')?.classList.add('turn-'+S.pt);S.pt=null}
  if(cur==='read'){const k=book();if(k){k.vis=k.vis||[];if(!k.vis.includes(k.page))k.vis.push(k.page)}}
  if(cur==='chapters'){const c=$('#chcur');if(c)c.scrollIntoView({block:'center'})}
  if(cur==='done'&&prev!==cur){runCount();if(S.anim)setTimeout(()=>{try{navigator.vibrate&&navigator.vibrate([40,60,40])}catch(e){}},1250)}
