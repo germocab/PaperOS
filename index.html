@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 4.5.2</title>
+<title>Paper e-reader 4.7</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -75,6 +75,8 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .agrid button{height:40px;border:0;border-radius:10px;background:var(--btn);cursor:pointer;display:grid;place-items:center;transition:transform .18s,background-color .2s}
 .agrid button:active{transform:scale(.92)}.agrid button i{width:10px;height:10px;border-radius:50%;background:var(--mut)}
 .agrid button.on{background:var(--ink)}.agrid button.on i{background:var(--screen)}
+.screen.hb .top,.screen.hb .trk{order:99}
+.screen.hb .top{padding:8px 16px calc(14px + 2px)}.screen.hb .trk{padding:10px 18px 14px}
 .sw-blue{background:var(--g-blue)}.sw-green{background:var(--g-green)}.sw-auto{background:var(--g-auto)}
 .sheet input.rn{width:100%;padding:12px;border-radius:12px;border:2px solid var(--ink);background:var(--btn);color:var(--ink);font:500 15px 'DM Sans',system-ui,sans-serif;margin-bottom:10px;outline:none}.book small{color:var(--mut);font-size:12px}
 .cover.has,.cv.has{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05)}
@@ -223,7 +225,7 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -245,7 +247,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='4.5.2';
+const VERSION='4.7';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -254,7 +256,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -318,6 +320,8 @@ function go(s){
  if(s!=='home')S.q=null;
  if(s==='ctrl'){if(['read','rctrl','track'].includes(S.screen)&&book())S.ctrlFrom='read';else if(S.screen==='home')S.ctrlFrom='home';else if(S.screen==='books')S.ctrlFrom='books'}
  S.screen=s;render()}
+function closeCtrl(){go(S.ctrlFrom==='read'&&book()?'read':S.ctrlFrom==='books'?'books':'home')}
+function setHpos(v){S.hpos=v;save();render()}
 function openBook(id){S.sheet=null;S.confirm=null;S.cur=id;const b=book();b.last=Date.now();save();go('read')}
 function openStart(id){const b=S.books.find(x=>x.id===id);if(b)b.page=0;openBook(id)}
 function openSheet(id){S.sheet=id;S.confirm=null;S.rename=null;S.sheetIn=true;render();S.sheetIn=false}
@@ -423,7 +427,7 @@ function books(){
  <div style="margin-top:12px">${l.length?l.map(bookRow).join(''):`<p class="empty">No books match these filters.</p><button class="item" onclick="resetBk()">Clear filters</button>`}</div></div>`}
 function ctrl(){
  const inBook=!!book();
- return `<div class="top"><button class="logo" onclick="go(S.ctrlFrom==='read'&&book()?'read':S.ctrlFrom==='books'?'books':'home')" aria-label="Close controls">P</button><div><b>${clock()}</b>${date()}<strong>PaperControls</strong></div></div>
+ return `<div class="top"><button class="logo" onclick="closeCtrl()" aria-label="Close controls">P</button><div><b>${clock()}</b>${date()}<strong>PaperControls</strong></div></div>
  <div class="body"><div class="icons">
  <button class="ic ${S.full?'on':''}" aria-label="Full View" title="Full View" onclick="toggleFull()">${svg('full')}</button>
  <button class="ic" aria-label="Upload" title="Upload EPUB, PDF or TXT" onclick="$('#file').click()">${svg('upload')}</button>
@@ -558,6 +562,9 @@ function text(){
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>
+ <h2 style="margin-top:22px">Controls &amp; status bar</h2>
+ <p class="chsub">Where the Paper Controls button and the status bar (clock, book, chapter, page) sit. Handy on a small PaperDevice.</p>
+ <div class="chips" role="radiogroup" aria-label="Status bar position"><button class="chip${S.hpos!=='bottom'?' on':''}" role="radio" aria-checked="${S.hpos!=='bottom'}" onclick="setHpos('top')">Top (default)</button><button class="chip${S.hpos==='bottom'?' on':''}" role="radio" aria-checked="${S.hpos==='bottom'}" onclick="setHpos('bottom')">Bottom</button></div>
  <button class="item" style="margin-top:14px" onclick="toggleGest()">${svg('gest')} Gestures <span>${S.gest?'On':'Off'}</span></button>
  <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
  <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
@@ -652,7 +659,7 @@ function bright(){$('#scr').style.opacity=S.bright/100*.4+.6}
 let sl;function resetSleep(){clearTimeout(sl);if(S.timeout)sl=setTimeout(()=>{const d=document.createElement('div');d.className='sleep';d.textContent='Paper';d.onclick=()=>{d.remove();resetSleep()};$('#scr').append(d)},S.timeout*60000)}
 function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
- s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'');
+ s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'');
  applyDev();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
@@ -706,6 +713,16 @@ sc.addEventListener('pointerdown',e=>{sOn=!e.target.closest('.row,input');sx=e.c
 sc.addEventListener('pointerup',e=>{if(!sOn)return;sOn=false;const dx=e.clientX-sx,dy=e.clientY-sy;
  if(S.gest&&S.screen==='home'&&S.q===null&&!S.sheet&&!lpDone&&dx<-70&&Math.abs(dx)>Math.abs(dy)*1.6){
   const b=[...S.books].filter(x=>x.last).sort((a,c)=>c.last-a.last)[0]||book();if(!b)return toast('No book to resume');openBook(b.id)}});
+/* swipe up anywhere in PaperControls to go back (touch events keep firing while the panel scrolls) */
+let cu={on:0};
+function cuStart(x,y,t){const b=$('.body');cu={on:S.screen==='ctrl'&&!!S.gest&&!t.closest('input'),x,y,bot:!b||b.scrollTop+b.clientHeight>=b.scrollHeight-2,st:b?b.scrollTop:0}}
+function cuEnd(x,y){if(!cu.on)return;cu.on=0;const b=$('.body'),dx=x-cu.x,dy=y-cu.y;
+ if(dy<-70&&-dy>Math.abs(dx)*1.5&&cu.bot&&(!b||b.scrollTop===cu.st)){swAt=Date.now();closeCtrl()}}
+sc.addEventListener('touchstart',e=>{const t=e.touches[0];if(t)cuStart(t.clientX,t.clientY,e.target)},{passive:true});
+sc.addEventListener('touchend',e=>{const t=e.changedTouches[0];if(t)cuEnd(t.clientX,t.clientY)},{passive:true});
+sc.addEventListener('touchcancel',()=>{cu.on=0},{passive:true});
+sc.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')cuStart(e.clientX,e.clientY,e.target)});
+sc.addEventListener('pointerup',e=>{if(e.pointerType!=='touch')cuEnd(e.clientX,e.clientY)});
 /* swipe down from the top of PaperHome opens Paper Controls */
 let dnOn=false,dnX=0,dnY=0;
 sc.addEventListener('pointerdown',e=>{const r=sc.getBoundingClientRect();
