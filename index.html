@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 4.0</title>
+<title>Paper e-reader 4.5</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -21,7 +21,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:background .3s}
-.device{width:min(390px,100vw - 16px);height:min(800px,100% - 16px);max-height:calc(100vh - 16px);background:var(--shell);border-radius:44px;padding:16px;box-shadow:0 0 0 2px var(--shell2),0 24px 60px #0006}
+.device{--bz:16px;--sw:358px;--sh:768px;width:min(calc(var(--sw) + var(--bz)*2),calc(100vw - 16px));height:min(calc(var(--sh) + var(--bz)*2),calc(100% - 16px));max-height:calc(100vh - 16px);background:var(--shell);border-radius:calc(26px + var(--bz)*1.125);padding:var(--bz);box-shadow:0 0 0 2px var(--shell2),0 24px 60px #0006}
 :root{--g-white:linear-gradient(135deg,#fff,#e9e9e9 55%,#d4d4d4);--g-dark:linear-gradient(135deg,#3a3a3a,#0f0f0f 60%);
 --g-gold:linear-gradient(135deg,#ecdcab 0%,#d8bf78 45%,#c9ad60 72%,#e0cb8d 100%);
 --g-rose:linear-gradient(135deg,#ffe4dc 0%,#e8a99b 25%,#b76e79 48%,#f6cfc3 65%,#d8907f 85%,#ffe1d8 100%);
@@ -70,7 +70,8 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .fr{background:none;border:0;color:var(--ink);font:500 10px/1.25 'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;padding:4px 0;text-align:center}
 .fr.on{font-weight:700}.sw{width:42px;height:42px;border-radius:50%;display:block;box-shadow:0 0 0 1px #0003,inset 0 1px 2px #fff8}
 .fr.on .sw{box-shadow:0 0 0 2px var(--screen),0 0 0 4px var(--ink)}
-.sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.sw-blue{background:var(--g-blue)}.sw-green{background:var(--g-green)}.sw-auto{background:var(--g-auto)}
+.sw-white{background:var(--g-white)}.sw-dark{background:var(--g-dark)}.sw-gold{background:var(--g-gold)}.sw-rose{background:var(--g-rose)}.dims{margin:8px 0 4px}.dims .lab{display:flex;justify-content:space-between;font:500 13px 'DM Sans';margin-top:12px}.dims .lab span{color:var(--mut)}.dims .slider{margin:4px 0 2px}
+.sw-blue{background:var(--g-blue)}.sw-green{background:var(--g-green)}.sw-auto{background:var(--g-auto)}
 .sheet input.rn{width:100%;padding:12px;border-radius:12px;border:2px solid var(--ink);background:var(--btn);color:var(--ink);font:500 15px 'DM Sans',system-ui,sans-serif;margin-bottom:10px;outline:none}.book small{color:var(--mut);font-size:12px}
 .cover.has,.cv.has{background-size:cover;background-position:center;filter:grayscale(1) contrast(1.05)}
 .empty{color:var(--mut);font-size:13px;padding:6px 0 10px;line-height:1.5}
@@ -218,7 +219,7 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -240,7 +241,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='4.0';
+const VERSION='4.5';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -249,7 +250,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -421,13 +422,12 @@ function ctrl(){
  return `<div class="top"><button class="logo" onclick="go(S.ctrlFrom==='read'&&book()?'read':S.ctrlFrom==='books'?'books':'home')" aria-label="Close controls">P</button><div><b>${clock()}</b>${date()}<strong>PaperControls</strong></div></div>
  <div class="body"><div class="icons">
  <button class="ic ${S.full?'on':''}" aria-label="Full View" title="Full View" onclick="toggleFull()">${svg('full')}</button>
- <button class="ic ${S.gest?'on':''}" aria-label="Gestures" title="Gestures" onclick="toggleGest()">${svg('gest')}</button>
+ <button class="ic" aria-label="Upload" title="Upload EPUB, PDF or TXT" onclick="$('#file').click()">${svg('upload')}</button>
  <button class="ic ${S.dark?'on':''}" aria-label="Dark mode" onclick="tog('dark')">${svg('dark')}</button>
  <button class="ic" aria-label="Settings" title="Settings" onclick="go('text')">${svg('sett')}</button></div>
  <input class="slider" type="range" min="40" max="100" value="${S.bright}" aria-label="Brightness" oninput="S.bright=this.value;bright();save()">
  <button class="item" onclick="go('home')">${svg('lib')} Library</button>
  <button class="item" onclick="go('notes')">${svg('notes')} Bookmark <span>${S.notes.length+S.hls.length}</span></button>
- <button class="item" onclick="$('#file').click()">${svg('upload')} Upload <span>EPUB, PDF, TXT</span></button>
  <button class="item" onclick="openSearchHome()">${svg('search')} Search <span>Titles & text</span></button>
  <h2>Quick Peek</h2>
  ${S.books.length?`<div class="row">${S.books.map(coverBtn).join('')}</div>`:'<p class="empty">Add books to jump between them here.</p>'}</div>`;
@@ -545,12 +545,21 @@ function text(){
  <div class="text" id="pv" style="--fs:${S.size}px;padding:0;flex:none;cursor:default">The quick brown fox jumps over the lazy dog. Adjust until the page feels right.</div>
  <h2 style="margin-top:22px">Device frame</h2>
  <div class="frames" role="radiogroup" aria-label="Device frame color">${FR.map(([k,n])=>`<button class="fr${frameSel()===k?' on':''}" role="radio" aria-checked="${frameSel()===k}" onclick="setFrame('${k}')"><i class="sw sw-${k}"></i>${n}</button>`).join('')}</div>
- <button class="item" style="margin-top:14px" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
+ <h2 style="margin-top:22px">Bezels &amp; screen</h2><div class="dims">
+ ${Object.entries(DIM).map(([k,[mn,mx,id,n]])=>`<div class="lab"><label for="${id}">${n}</label><span id="dl-${k}">${k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px'}</span></div><input class="slider" id="${id}" type="range" min="${mn}" max="${mx}" value="${S[k]}" aria-label="${n}" oninput="setDim('${k}',this.value)">`).join('')}
+ <button class="item" onclick="resetDim()">Reset size &amp; bezels</button></div>
+ <button class="item" style="margin-top:14px" onclick="toggleGest()">${svg('gest')} Gestures <span>${S.gest?'On':'Off'}</span></button>
+ <button class="item" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button>
  <button class="item" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button>
  <button class="item" onclick="tog('anim')">${svg('eye')} Animations <span>${S.anim?'On':'Off'}</span></button>
  <button class="item" onclick="tog('ccolor')">${svg('eye')} Book covers in color <span>${S.ccolor?'On':'Off'}</span></button><p class="ver">Paper e-reader · Version ${VERSION}</p></div>`;
 }
 const FR=[['auto','Match Mode'],['white','White'],['dark','Dark'],['gold','Shiny Gold'],['rose','Shiny Rose Gold'],['blue','Deep Blue'],['green','Forest Green']];
+const DIM={bz:[0,32,'bezel-size','Bezels'],dw:[260,520,'dev-w','Screen width'],dh:[480,900,'dev-h','Screen height']};
+function applyDev(){const d=$('.device');if(!d)return;
+ d.style.setProperty('--bz',S.bz+'px');d.style.setProperty('--sw',S.dw+'px');d.style.setProperty('--sh',S.dh+'px')}
+function setDim(k,v){S[k]=+v;applyDev();const l=$('#dl-'+k);if(l)l.textContent=k==='bz'?(S.bz===0?'None':S.bz+' px'):S[k]+' px';save();clearTimeout(setDim.t);setDim.t=setTimeout(()=>{S.fc={}},200)}
+function resetDim(){S.bz=16;S.dw=358;S.dh=768;save();render()}
 const frameSel=()=>S.frame||'auto';
 const frameKey=()=>{const f=frameSel();return f==='auto'?(S.dark?'dark':'white'):f};
 function setFrame(k){S.frame=k;save();render()}
@@ -624,6 +633,7 @@ function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
  s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'');
+ applyDev();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
  S.hp=null;
  s.innerHTML=V[S.screen]();
