@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 5.0</title>
+<title>Paper e-reader 6.0</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -75,6 +75,16 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .agrid button{height:40px;border:0;border-radius:10px;background:var(--btn);cursor:pointer;display:grid;place-items:center;transition:transform .18s,background-color .2s}
 .agrid button:active{transform:scale(.92)}.agrid button i{width:10px;height:10px;border-radius:50%;background:var(--mut)}
 .agrid button.on{background:var(--ink)}.agrid button.on i{background:var(--screen)}
+.device{position:relative}
+.device{--hw:#b5b5b5}.device.f-white{--hw:#c4c4c4}.device.f-dark{--hw:#3c3c3c}.device.f-gold{--hw:#bfa458}.device.f-rose{--hw:#c48f82}.device.f-blue{--hw:#34498a}.device.f-green{--hw:#30604a}
+.hw{position:absolute;z-index:3;border:0;padding:0;cursor:pointer;background:linear-gradient(var(--hwd,90deg),var(--hw),color-mix(in srgb,var(--hw) 70%,#000));box-shadow:inset 0 1px 0 #fff5,0 1px 3px #0006;transition:transform .12s,filter .12s;-webkit-tap-highlight-color:transparent}
+.hw::after{content:"";position:absolute;inset:-9px}
+.hw-top{top:-5px;right:64px;width:62px;height:6px;border-radius:5px 5px 0 0;--hwd:180deg}
+.hw-side{right:-5px;top:24%;width:6px;height:84px;border-radius:0 5px 5px 0}
+.hw-top:active{transform:translateY(2px);filter:brightness(.85)}.hw-side:active{transform:translateX(-2px);filter:brightness(.85)}
+.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side{right:0;border-radius:5px 0 0 5px}
+.chips.wrap{flex-wrap:wrap;overflow:visible}
+.nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
 .bw{padding:12px 0 6px;flex:none;position:relative;z-index:6}
 .screen.hb .bw{order:99;padding:6px 0 12px}.screen.hb .pop{top:auto;bottom:calc(100% + 10px)}
 .top .info{transition:opacity .5s}.screen.nod .top .info{opacity:0}
@@ -97,7 +107,7 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .slider{width:100%;accent-color:var(--ink);margin:6px 0 12px}
 .item{display:flex;width:100%;gap:10px;align-items:center;padding:12px;border-radius:12px;background:var(--btn);border:0;color:var(--ink);font:500 13px 'DM Sans';cursor:pointer;margin-bottom:8px;text-align:left}
 .item span{margin-left:auto;color:var(--mut);font-size:12px}
-.bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;gap:0;background:var(--bar);margin:0 10px;border-radius:24px;padding:10px 6px 8px;flex:none;box-shadow:0 8px 20px #0002,inset 0 1px 0 #ffffff55}
+.bar{display:grid;grid-template-columns:repeat(var(--nb,5),minmax(0,1fr));align-items:start;gap:0;background:var(--bar);margin:0 10px;border-radius:24px;padding:10px 6px 8px;flex:none;box-shadow:0 8px 20px #0002,inset 0 1px 0 #ffffff55}
 .bar .tile{width:42px;height:42px;border-radius:15px;background:var(--btn);display:grid;place-items:center;box-shadow:inset 0 1px 0 #ffffff66,0 2px 4px #0001;transition:background-color .2s,color .2s}
 .bar .tile svg{width:20px;height:20px}
 .bar .tile.pl{background:var(--ink);color:var(--screen);font:900 20px 'Playfair Display',serif}
@@ -229,11 +239,13 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 .hx{flex:none;width:40px;border:0;border-radius:12px;background:var(--btn);color:var(--ink);cursor:pointer;display:grid;place-items:center}.hx:active{transform:scale(.92)}
 .hd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style></head><body>
-<div class="device"><div class="screen" id="scr"></div></div>
+<div class="device"><div class="screen" id="scr"></div>
+<button class="hw hw-top" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
+<button class="hw hw-side" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,pbtn:'ctrl',plogo:true,pact:'next',batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -255,7 +267,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='5.0';
+const VERSION='6.0';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -264,7 +276,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,frame:S.frame,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -321,7 +333,7 @@ async function importFiles(files){
 const book=()=>S.books.find(b=>b.id===S.cur);
 const clock=()=>new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:false});
 const date=()=>new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-let tt;function toast(m){clearTimeout(tt);let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';$('#scr').append(t)}t.textContent=m;tt=setTimeout(()=>t.remove(),1600)}
+let tt;function toast(m,ms){clearTimeout(tt);let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';$('#scr').append(t)}t.textContent=m;tt=setTimeout(()=>t.remove(),ms||1600)}
 function go(s){
  S.dmenu=false;S.bmenu=false;if(s!=='notes')S.hlEdit=null;
  if(s==='text')S.setFrom=S.screen==='rctrl'?'rctrl':'ctrl';
@@ -435,7 +447,7 @@ function books(){
  <div style="margin-top:12px">${l.length?l.map(bookRow).join(''):`<p class="empty">No books match these filters.</p><button class="item" onclick="resetBk()">Clear filters</button>`}</div></div>`}
 function ctrl(){
  const inBook=!!book();
- return `<div class="top"><button class="logo" onclick="closeCtrl()" aria-label="Close controls">P</button><div><b>${clock()}</b>${date()}<span id="batt">${battTxt()}</span><strong>PaperControls</strong></div></div>
+ return `<div class="top"><button class="logo keep" onclick="closeCtrl()" aria-label="Close controls">P</button><div><b>${clock()}</b>${date()}<span id="batt">${battTxt()}</span><strong>PaperControls</strong></div></div>
  <div class="body"><div class="icons">
  <button class="ic ${S.full?'on':''}" aria-label="Full View" title="Full View" onclick="toggleFull()">${svg('full')}</button>
  <button class="ic" aria-label="Upload" title="Upload EPUB, PDF or TXT" onclick="$('#file').click()">${svg('upload')}</button>
@@ -457,7 +469,7 @@ function read(){
 function rctrl(){
  const b=book();
  return `${S.dmenu?'<div class="dscrim" onclick="toggleDmenu()"></div>':''}<div class="bw"><div class="bar" role="toolbar" aria-label="Reading controls">
- <button onclick="go('ctrl')" aria-label="Paper Controls"><span class="tile pl">P</span>Controls</button>
+ <button class="cbtn" onclick="go('ctrl')" aria-label="Paper Controls"><span class="tile pl">P</span>Controls</button>
  <button onclick="go('home')"><span class="tile">${svg('lib')}</span>Library</button>
  <div class="dwrap"><button onclick="toggleDmenu()" aria-haspopup="true" aria-expanded="${!!S.dmenu}"><span class="tile${S.dmenu?' on':''}">${svg('disp')}</span>Display</button>
   ${S.dmenu?`<div class="pop" role="menu"><button role="menuitem" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button><button role="menuitem" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button></div>`:''}</div>
@@ -577,6 +589,11 @@ function text(){
  <div class="dims"><div class="lab"><label for="al-x">Horizontal</label><span id="dl-ax">${S.ax}%</span></div><input class="slider" id="al-x" type="range" min="0" max="100" value="${S.ax}" aria-label="Horizontal position" oninput="setAlign(this.value,null)">
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>
+ <h2 style="margin-top:22px">Hardware buttons</h2>
+ <p class="chsub">The PaperButton is on top of the device and the PaperAction is on its right side.</p>
+ <div class="fl"><small>PaperButton opens</small><div class="chips"><button class="chip${S.pbtn!=='lib'?' on':''}" aria-pressed="${S.pbtn!=='lib'}" onclick="setHw('pbtn','ctrl')">PaperControls</button><button class="chip${S.pbtn==='lib'?' on':''}" aria-pressed="${S.pbtn==='lib'}" onclick="setHw('pbtn','lib')">Library</button></div></div>
+ ${S.pbtn!=='lib'?`<button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>`:''}
+ <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>
  <h2 style="margin-top:22px">Controls &amp; status bar</h2>
  <p class="chsub">Where the Paper Controls button and the status bar (clock, book, chapter, page) sit. Handy on a small PaperDevice.</p>
  <div class="chips" role="radiogroup" aria-label="Status bar position"><button class="chip${S.hpos!=='bottom'?' on':''}" role="radio" aria-checked="${S.hpos!=='bottom'}" onclick="setHpos('top')">Top (default)</button><button class="chip${S.hpos==='bottom'?' on':''}" role="radio" aria-checked="${S.hpos==='bottom'}" onclick="setHpos('bottom')">Bottom</button></div>
@@ -620,7 +637,7 @@ function tap(e){
  if(getSelection().toString().trim())return;
  if(S.hp){hidePal();return}
  const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;
- if(x<.3)turn(-1);else if(x>.7)turn(1)}
+ if(x<.3)turn(-1);else if(x>.7)turn(1);else if(!logoOn())go('rctrl')}
 function turn(d){const b=book(),n=b.page+d;
  if(S.spK===b.id+'|'+b.page){
   if(d>0&&S.sp<(S.nsub||1)-1){S.sp++;b.last=Date.now();S.pt='next';return render()}
@@ -655,6 +672,27 @@ function hlAdd(c){const b=book(),h=S.hp;if(!b||!h)return;
 function hlErase(){const b=book(),h=S.hp;if(!b||!h)return;const n=S.hls.length;
  S.hls=S.hls.filter(x=>!(x.b===b.id&&x.p===b.page&&x.a<h.z&&x.z>h.a));
  save();try{getSelection().removeAllRanges()}catch(e){}render();toast(S.hls.length<n?'Highlight removed':'No highlight there')}
+/* hardware buttons */
+const logoOn=()=>S.plogo!==false||S.pbtn!=='ctrl';
+const PACT=[['next','Next page'],['prev','Previous page'],['dark','Toggle Light/Dark mode'],['nod','Start No Distraction'],['chap','Next chapter']];
+const hwMsg=m=>toast(m,2000);
+function setHw(k,v){S[k]=v;save();render()}
+function hwPress(w){
+ try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
+ S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;
+ if(w==='b'){
+  if(S.pbtn==='lib'){go('home');return hwMsg('PaperButton - Library')}
+  if(S.screen==='ctrl'){closeCtrl();return hwMsg('PaperButton - Back')}
+  go('ctrl');return hwMsg('PaperButton - PaperControls')}
+ const a=S.pact||'next',name=(PACT.find(x=>x[0]===a)||PACT[0])[1],pre='PaperAction - ',
+  reading=!!book()&&['read','rctrl','track'].includes(S.screen);
+ if(a==='dark'){S.dark=!S.dark;save();render();return hwMsg(pre+(S.dark?'Dark mode':'Light mode'))}
+ if(a==='nod'){
+  if(!S.nod)return hwMsg(pre+'No Distraction is off in Settings');
+  clearTimeout(nodT);nodT=null;S.nodHide=true;$('#scr').classList.add('nod');return hwMsg(pre+'No Distraction')}
+ if(!reading)return hwMsg(pre+name+' (open a book first)');
+ if(a==='next')turn(1);else if(a==='prev')turn(-1);else jump(1);
+ hwMsg(pre+name)}
 function finish(){const b=book();b.done=Date.now();save();go('done')}
 function restart(id){const b=S.books.find(x=>x.id===id);if(b){b.page=0;b.secs=0;b.vis=[];b.done=0}openBook(id)}
 const fmtT=n=>n<60?`${n}<small>sec</small>`:n<3600?`${Math.floor(n/60)}<small>min</small>`:`${Math.floor(n/3600)}<small>h</small> ${Math.floor(n%3600/60)}<small>m</small>`;
@@ -689,7 +727,7 @@ function battInit(){if(battObj||!navigator.getBattery)return;
   ['levelchange','chargingchange'].forEach(n=>b.addEventListener(n,u));u()}).catch(()=>{S.bl=null;const e=$('#batt');if(e)e.textContent=' · Battery N/A'})}
 function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
- s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(S.nod&&S.nodHide?' nod':'');
+ s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(S.nod&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'');
  applyDev();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
