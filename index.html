@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper e-reader 8.0</title>
+<title>Paper e-reader 8.1</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="mobile-web-app-capable" content="yes">
@@ -85,10 +85,10 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .hw::after{content:"";position:absolute;inset:-9px}
 .hw-top{top:-9px;right:64px;width:62px;height:8px;border-radius:5px 5px 0 0;--hwd:180deg}
 .hw-side{right:-9px;top:24%;width:8px;height:84px;border-radius:0 5px 5px 0;background:linear-gradient(90deg,#ffa347,#f4711a 55%,#c9560a)}
-.hw-multi{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0}
-.hw-multi:active{transform:translateX(-2px);filter:brightness(.85)}
+.hw-back{right:-9px;top:calc(24% + 106px);width:8px;height:56px;border-radius:0 5px 5px 0}
+.hw-back:active{transform:translateX(-2px);filter:brightness(.85)}
 .hw-top:active{transform:translateY(2px);filter:brightness(.85)}.hw-side:active{transform:translateX(-2px);filter:brightness(.85)}
-.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side,.full .hw-multi{right:0;border-radius:5px 0 0 5px}
+.full .hw{opacity:.55}.full .hw-top{top:0;border-radius:0 0 5px 5px}.full .hw-side,.full .hw-back{right:0;border-radius:5px 0 0 5px}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .nologo .logo:not(.keep),.nologo .cbtn{display:none}.nologo .top{justify-content:flex-end}.nologo .bar{--nb:4}
 .bk{position:absolute;inset:0;border-radius:inherit;background:var(--dg,var(--g-silver));overflow:hidden;display:none;color:var(--dink,#222)}
@@ -154,15 +154,12 @@ h2{font:900 26px 'Playfair Display',serif;margin:14px 0 10px}
 .trk .nav{display:flex;justify-content:space-between;align-items:flex-start;font-size:11px;text-align:center}
 .trk .nav button{background:none;border:0;color:var(--ink);font:500 12px 'DM Sans';cursor:pointer;padding:4px}
 .trk .ends{display:flex;justify-content:space-between;font-size:11px}
-.mp{position:absolute;inset:0;z-index:7;background:var(--screen);color:var(--ink);display:flex;flex-direction:column;animation:mpin .22s cubic-bezier(.2,.8,.2,1) both}
-@keyframes mpin{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
-.mp header{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 8px}.mp h2{font:900 22px 'Playfair Display',serif;margin:0}
-.mp .mpg{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:8px 16px 16px;align-content:start}
-.mpc{position:relative;display:flex;flex-direction:column;gap:6px;background:var(--btn);border-radius:16px;padding:8px;border:2px solid transparent}.mpc.cur{border-color:var(--ink)}
-.mpc .th{width:100%;aspect-ratio:2/3;border-radius:10px;background:var(--card) center/cover;font:700 12px 'Playfair Display',serif;padding:8px;display:flex;align-items:flex-end;overflow:hidden;color:var(--ink);text-align:left;border:0;cursor:pointer}
-.mpc strong{font:700 12px/1.25 'DM Sans',sans-serif;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mpc small{color:var(--mut);font-size:11px}
-.mpc .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:var(--ink);color:var(--screen);cursor:pointer;display:grid;place-items:center;z-index:1}.mpc .x svg{width:13px;height:13px}
-.mp footer{display:flex;gap:8px;padding:8px 16px 16px}.mp footer .item{margin:0;justify-content:center}
+.glow{position:absolute;inset:var(--bz);border-radius:26px;pointer-events:none;overflow:hidden;z-index:4}
+.glow::before{content:"";position:absolute;opacity:0;animation:glw .6s ease-out both}
+.glow.top::before{left:0;right:0;top:0;height:70px;background:radial-gradient(ellipse var(--r) 100% at var(--p) 0,var(--gc),transparent)}
+.glow.right::before{top:0;bottom:0;right:0;width:70px;background:radial-gradient(ellipse 100% var(--r) at 100% var(--p),var(--gc),transparent)}
+@keyframes glw{0%{opacity:0}20%{opacity:.4}100%{opacity:0}}
+.device.full .glow{inset:0;border-radius:0}
 .sleep.off{background:#000;font-size:0}.sleep{position:absolute;inset:0;background:#000d;color:#fff;display:grid;place-items:center;font:700 22px 'Playfair Display';cursor:pointer;z-index:9}
 .toast{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--screen);padding:8px 14px;border-radius:20px;font-size:12px;z-index:8}
 .note{padding:10px 12px;background:var(--btn);border-radius:12px;margin-bottom:8px;font-size:12px;line-height:1.5;width:100%;border:0;text-align:left;color:var(--ink);cursor:pointer;display:block}
@@ -275,11 +272,11 @@ mark.hl{color:#111;border-radius:2px;padding:0}
 <div class="device"><div class="screen" id="scr"></div><div class="bk" id="bk"></div>
 <button class="hw hw-top" id="hwB" aria-label="PaperButton" title="PaperButton" onclick="hwPress('b')"></button>
 <button class="hw hw-side" id="hwA" aria-label="PaperAction" title="PaperAction" onclick="hwPress('a')"></button>
-<button class="hw hw-multi" id="hwM" aria-label="MultiPaperButton" title="MultiPaperButton" onclick="hwPress('m')"></button></div>
+<button class="hw hw-back" id="hwBack" aria-label="Back button" title="Back" onclick="hwPress('k')"></button></div>
 <input type="file" id="file" accept=".epub,.pdf,.txt" multiple hidden>
 <script>
 const $=s=>document.querySelector(s);
-const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,pbtn:'ctrl',plogo:true,pact:'next',bezel:'auto',dcol:'silver',stk:[],back:false,stkSel:null,bkTray:true,batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null,open:[],mp:false};
+const S={books:[],cur:null,screen:'home',night:false,dark:false,size:14,timeout:0,notes:[],bright:100,anim:true,full:false,gest:true,ccolor:false,bz:16,dw:358,dh:768,ax:50,ay:50,hpos:'top',nod:false,nodHide:false,pbtn:'ctrl',plogo:true,pact:'next',bezel:'auto',dcol:'silver',stk:[],back:false,stkSel:null,bkTray:true,batt:false,hlEdit:null,hls:[],bmenu:false,q:null,ctrlFrom:'home',sheet:null,confirm:null,shown:null};
 const I={wifi:'<svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/></svg>',
 shot:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15l5-5 4 4 3-3 4 4"/></svg>',
 night:'<svg viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>',
@@ -301,7 +298,7 @@ edit:'<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></s
 trash:'<svg viewBox="0 0 24 24"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>',
 filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'};
-const VERSION='8.0';
+const VERSION='8.1';
 const ico=(k,c='')=>`<span class="ic ${c}" style="width:auto;height:auto;background:none">${I[k]}</span>`.replace('class="ic ','class="ic-s ');
 const svg=k=>I[k].replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"');
 
@@ -310,7 +307,7 @@ let db;
 function idb(){return new Promise(r=>{try{const q=indexedDB.open('paper',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})}
 const get=k=>new Promise(r=>{if(!db)return r();try{const q=db.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}catch(e){r()}});
 const put=(k,v)=>{try{db&&db.transaction('k','readwrite').objectStore('k').put(v,k)}catch(e){}};
-const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype,open:S.open});
+const save=()=>put('state',{books:S.books,cur:S.cur,night:S.night,dark:S.dark,size:S.size,timeout:S.timeout,notes:S.notes,bright:S.bright,anim:S.anim,full:S.full,gest:S.gest,ccolor:S.ccolor,bz:S.bz,dw:S.dw,dh:S.dh,ax:S.ax,ay:S.ay,hpos:S.hpos,nod:S.nod,batt:S.batt,pbtn:S.pbtn,plogo:S.plogo,pact:S.pact,bezel:S.bezel,dcol:S.dcol,stk:S.stk,hls:S.hls,bsort:S.bsort,bfilter:S.bfilter,btype:S.btype});
 
 /* pagination */
 function paginate(text){
@@ -373,16 +370,18 @@ function go(s){
  if(s==='text')S.setFrom=S.screen==='rctrl'?'rctrl':'ctrl';
  if(s!=='home')S.q=null;
  if(s==='ctrl'){if(['read','rctrl','track'].includes(S.screen)&&book())S.ctrlFrom='read';else if(S.screen==='home')S.ctrlFrom='home';else if(S.screen==='books')S.ctrlFrom='books'}
+
+ if(s==='read'&&['home','books','notes'].includes(S.screen))S.readFrom=S.screen;
  S.screen=s;render()}
 function closeCtrl(){go(S.ctrlFrom==='read'&&book()?'read':S.ctrlFrom==='books'?'books':'home')}
 function setHpos(v){S.hpos=v;save();render()}
-function openBook(id){S.sheet=null;S.confirm=null;S.mp=false;S.cur=id;S.open=[id,...S.open.filter(x=>x!==id)];const b=book();b.last=Date.now();save();go('read')}
+function openBook(id){S.sheet=null;S.confirm=null;S.cur=id;const b=book();b.last=Date.now();save();go('read')}
 function openStart(id){const b=S.books.find(x=>x.id===id);if(b)b.page=0;openBook(id)}
 function openSheet(id){S.sheet=id;S.confirm=null;S.rename=null;S.sheetIn=true;render();S.sheetIn=false}
 function closeSheet(){const done=()=>{S.sheet=null;S.confirm=null;S.rename=null;render()};const sh=$('.sheet');
  if(S.anim&&sh){sh.classList.add('out');$('.scrim')?.classList.add('out');setTimeout(done,200)}else done()}
 function delBook(id){if(S.confirm!==id){S.confirm=id;render();return}
- const kill=()=>{S.books=S.books.filter(b=>b.id!==id);S.notes=S.notes.filter(n=>n.b!==id);S.hls=S.hls.filter(h=>h.b!==id);S.open=S.open.filter(x=>x!==id);if(S.cur===id)S.cur=null;save();render()};
+ const kill=()=>{S.books=S.books.filter(b=>b.id!==id);S.notes=S.notes.filter(n=>n.b!==id);S.hls=S.hls.filter(h=>h.b!==id);if(S.cur===id)S.cur=null;save();render()};
  S.sheet=null;S.confirm=null;render();
  const els=S.anim?[...document.querySelectorAll('#scr [data-bid]')].filter(e=>Number(e.dataset.bid)===id):[];
  if(!els.length)return kill();
@@ -454,7 +453,7 @@ function home(){
  const rec=[...S.books].filter(b=>b.last).sort((a,b)=>b.last-a.last).slice(0,6);
  return hdr("go('ctrl')",'PaperHome',null,tap,ho)+`<div class="body"><h2>Resume</h2>
  ${rec.length?`<div class="row">${rec.map(coverBtn).join('')}</div>`:'<p class="empty">Books you start reading show up here.</p>'}
- <h2 class="lnk" role="button" tabindex="0" onclick="go('books')" aria-label="Open Your Books page">Your Books <span aria-hidden="true">›</span></h2>
+ <h2 class="lnk" role="button" tabindex="0" onclick="go('books')" aria-label="Open Library page">Library <span aria-hidden="true">›</span></h2>
  ${S.books.map(bookRow).join('')}${S.books.length?'':'<p class="empty">No books yet. Open Paper Controls and choose Upload to add EPUB, PDF or TXT files.</p>'}</div>`;
 }
 const SORTS=[['recent','Recently read'],['added','Recently added'],['title','Title A–Z'],['progress','Progress']],FILTS=[['all','All'],['reading','Reading'],['new','Not started'],['done','Finished']],TYPES=[['all','Any format'],['epub','EPUB'],['pdf','PDF'],['txt','TXT']];
@@ -477,7 +476,7 @@ function books(){
  const so=S.bsort||'recent',fi=S.bfilter||'all',ty=S.btype||'all',act=so!=='recent'||fi!=='all'||ty!=='all';
  const l=S.books.filter(b=>(fi==='all'||(fi==='done'?!!b.done:fi==='reading'?(!b.done&&b.page>0):(!b.done&&b.page===0)))&&(ty==='all'||bkExt(b)===ty));
  l.sort({recent:(a,b)=>(b.last||0)-(a.last||0),added:(a,b)=>(b.added||0)-(a.added||0),title:(a,b)=>(a.title||'').localeCompare(b.title||'',undefined,{sensitivity:'base',numeric:true}),progress:(a,b)=>bkPct(b)-bkPct(a)}[so]);
- return hdr("go('ctrl')",'Your Books')+`<div class="body"><div class="bhead"><h2>Your Books</h2><button class="ic${act?' on':''}" aria-label="Sort and filter" title="Sort and filter" aria-haspopup="dialog" onclick="openBmenu()">${svg('filter')}</button></div><p class="chsub">${l.length===S.books.length?`${l.length} ${l.length===1?'book':'books'}`:`${l.length} of ${S.books.length} books`}</p>
+ return hdr("go('ctrl')",'Library')+`<div class="body"><div class="bhead"><h2>Library</h2><button class="ic${act?' on':''}" aria-label="Sort and filter" title="Sort and filter" aria-haspopup="dialog" onclick="openBmenu()">${svg('filter')}</button></div><p class="chsub">${l.length===S.books.length?`${l.length} ${l.length===1?'book':'books'}`:`${l.length} of ${S.books.length} books`}</p>
  <div style="margin-top:12px">${l.length?l.map(bookRow).join(''):`<p class="empty">No books match these filters.</p><button class="item" onclick="resetBk()">Clear filters</button>`}</div></div>`}
 function ctrl(){
  const inBook=!!book();
@@ -488,7 +487,7 @@ function ctrl(){
  <button class="ic ${S.dark?'on':''}" aria-label="Dark mode" onclick="tog('dark')">${svg('dark')}</button>
  <button class="ic" aria-label="Settings" title="Settings" onclick="go('text')">${svg('sett')}</button></div>
  <input class="slider" type="range" min="40" max="100" value="${S.bright}" aria-label="Brightness" oninput="S.bright=this.value;bright();save()">
- <button class="item" onclick="go('home')">${svg('lib')} Library</button>
+ <button class="item" onclick="go('home')">${svg('lib')} Home</button>
  <button class="item" onclick="go('notes')">${svg('notes')} Bookmark <span>${S.notes.length+S.hls.length}</span></button>
  <button class="item" onclick="openSearchHome()">${svg('search')} Search <span>Titles & text</span></button>
  <h2>Quick Peek</h2>
@@ -504,7 +503,7 @@ function rctrl(){
  const b=book();
  return `${S.dmenu?'<div class="dscrim" onclick="toggleDmenu()"></div>':''}<div class="bw"><div class="bar" role="toolbar" aria-label="Reading controls">
  <button class="cbtn" onclick="go('ctrl')" aria-label="Paper Controls"><span class="tile pl">P</span>Controls</button>
- <button onclick="go('home')"><span class="tile">${svg('lib')}</span>Library</button>
+ <button onclick="go('home')"><span class="tile">${svg('lib')}</span>Home</button>
  <div class="dwrap"><button onclick="toggleDmenu()" aria-haspopup="true" aria-expanded="${!!S.dmenu}"><span class="tile${S.dmenu?' on':''}">${svg('disp')}</span>Display</button>
   ${S.dmenu?`<div class="pop" role="menu"><button role="menuitem" onclick="tog('night')">${svg('night')} Night mode <span>${S.night?'On':'Off'}</span></button><button role="menuitem" onclick="tog('dark')">${svg('eye')} Dark mode <span>${S.dark?'On':'Off'}</span></button></div>`:''}</div>
  <button onclick="go('text')"><span class="tile">${svg('sett')}</span>Settings</button>
@@ -590,7 +589,7 @@ function done(){
  <h1 class="end" aria-label="The End">${word}</h1>
  <p class="ft">You finished <strong>${esc(b.title)}</strong></p>
  <div class="stats"><div class="st"><b data-k="time" data-t="${b.secs||0}">0</b><span>time reading</span></div><div class="st"><b data-k="pg" data-t="${(b.vis||[]).length}">0</b><span>pages read of ${b.pages.length}</span></div></div>
- <div class="acts"><button class="fb main" onclick="restart(${b.id})">Start over</button><button class="fb" onclick="go('home')">Back to library</button></div>
+ <div class="acts"><button class="fb main" onclick="restart(${b.id})">Start over</button><button class="fb" onclick="go('home')">Back to Home</button></div>
  </div>`;
 }
 const pg=()=>{const b=book();return htmlHL(b.pages[b.page],0,hlsFor(b))};
@@ -631,8 +630,8 @@ function text(){
  <div class="lab"><label for="al-y">Vertical</label><span id="dl-ay">${S.ay}%</span></div><input class="slider" id="al-y" type="range" min="0" max="100" value="${S.ay}" aria-label="Vertical position" oninput="setAlign(null,this.value)">
  <button class="item" onclick="setAlign(50,50)">Center device</button></div>
  <h2 style="margin-top:22px">Hardware buttons</h2>
- <p class="chsub">The PaperButton is on top of the device. On its right side are the PaperAction and, just under it, the MultiPaperButton, which opens MultiPaper (press it twice to go to the Library) and can't be customized.</p>
- <div class="fl"><small>PaperButton opens</small><div class="chips"><button class="chip${S.pbtn!=='lib'?' on':''}" aria-pressed="${S.pbtn!=='lib'}" onclick="setHw('pbtn','ctrl')">PaperControls</button><button class="chip${S.pbtn==='lib'?' on':''}" aria-pressed="${S.pbtn==='lib'}" onclick="setHw('pbtn','lib')">Library</button></div></div>
+ <p class="chsub">The PaperButton is on top of the device. On its right side are the PaperAction and, just under it, the Back button, which takes you back one step and can't be customized.</p>
+ <div class="fl"><small>PaperButton opens</small><div class="chips"><button class="chip${S.pbtn!=='lib'?' on':''}" aria-pressed="${S.pbtn!=='lib'}" onclick="setHw('pbtn','ctrl')">PaperControls</button><button class="chip${S.pbtn==='lib'?' on':''}" aria-pressed="${S.pbtn==='lib'}" onclick="setHw('pbtn','lib')">Home</button></div></div>
  ${S.pbtn!=='lib'?`<button class="item" onclick="setHw('plogo',S.plogo===false)">${svg('eye')} On-screen P button <span>${S.plogo===false?'Hidden':'Shown'}</span></button><p class="chsub" style="margin-top:-2px">Hide it if you open PaperControls with the PaperButton. While it's hidden, tap the center of a page to open the reading controls.</p>`:''}
  <div class="fl"><small>PaperAction does</small><div class="chips wrap">${PACT.map(([k,n])=>`<button class="chip${(S.pact||'next')===k?' on':''}" aria-pressed="${(S.pact||'next')===k}" onclick="setHw('pact','${k}')">${n}</button>`).join('')}</div></div>
  <h2 style="margin-top:22px">Controls &amp; status bar</h2>
@@ -768,16 +767,32 @@ const logoOn=()=>S.plogo!==false||S.pbtn!=='ctrl';
 const PACT=[['next','Next page'],['prev','Previous page'],['dark','Toggle Light/Dark mode'],['nod','Start No Distraction'],['chap','Next chapter'],['save','Save page'],['bm','Open Bookmarks'],['scr','Turn screen on/off']];
 const hwMsg=m=>toast(m,2000);
 function setHw(k,v){S[k]=v;save();render()}
+function glow(side,col,id){const d=$('.device'),sc=$('#scr'),bt=document.getElementById(id);if(!d||!sc||!bt||!S.anim)return;
+ const a=sc.getBoundingClientRect(),b=bt.getBoundingClientRect(),top=side==='top',
+  p=top?b.left+b.width/2-a.left:b.top+b.height/2-a.top,half=(top?b.width:b.height)/2;
+ const g=document.createElement('div');g.className='glow '+side;g.style.setProperty('--gc',col);g.style.setProperty('--p',p+'px');g.style.setProperty('--r',(half+24)+'px');d.append(g);setTimeout(()=>g.remove(),800)}
+const NAMES={home:'Home',books:'Library',ctrl:'PaperControls',read:'the page',rctrl:'the page',track:'Reading tracker',chapters:'Chapters',notes:'Bookmark',text:'Settings',done:'Home'};
+function backNav(){
+ if(S.sheet||S.confirm||S.rename||S.bmenu||S.dmenu||S.hlEdit){S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;S.hlEdit=null;render();return 'Back - Closed'}
+ const sc=S.screen,b=book();let t=null;
+ if(sc==='home'){if(S.q!==null){closeSearch();return 'Back - Home'}return 'Back - Already on Home'}
+ if(sc==='books'||sc==='done')t='home';
+ else if(sc==='ctrl'){closeCtrl();return 'Back'}
+ else if(sc==='read')t=['home','books','notes'].includes(S.readFrom)?S.readFrom:'home';
+ else if(sc==='rctrl'||sc==='chapters')t='read';
+ else if(sc==='track')t=b&&hasCh(b)?'chapters':'read';
+ else if(sc==='notes')t='ctrl';
+ else if(sc==='text')t=S.setFrom==='rctrl'&&b?'rctrl':'ctrl';
+ else t='home';
+ go(t);return 'Back - '+(NAMES[t]||'')}
 function hwPress(w){
  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
+ glow(w==='b'?'top':'right',w==='a'?'#f4711a':'#5aa9ff',w==='b'?'hwB':w==='a'?'hwA':'hwBack');
  if(S.off){S.off=false;render();return hwMsg(w==='a'&&(S.pact||'next')==='scr'?'PaperAction - Screen on':'Screen on')}
+ if(w==='k')return hwMsg(backNav());
  S.sheet=null;S.confirm=null;S.rename=null;S.bmenu=false;S.dmenu=false;
- if(w==='m'){
-  if(S.mp){S.mp=false;go('home');return hwMsg('MultiPaperButton - Library')}
-  S.mp=true;render();return}
- S.mp=false;
  if(w==='b'){
-  if(S.pbtn==='lib'){go('home');return hwMsg('PaperButton - Library')}
+  if(S.pbtn==='lib'){go('home');return hwMsg('PaperButton - Home')}
   if(S.screen==='ctrl'){closeCtrl();return hwMsg('PaperButton - Back')}
   go('ctrl');return hwMsg('PaperButton - PaperControls')}
  const a=S.pact||'next',name=(PACT.find(x=>x[0]===a)||PACT[0])[1],pre='PaperAction - ',
@@ -788,23 +803,11 @@ function hwPress(w){
  if(a==='dark'){S.dark=!S.dark;save();render();return hwMsg(pre+(S.dark?'Dark mode':'Light mode'))}
  if(a==='nod'){
   if(!S.nod)return hwMsg(pre+'No Distraction is off in Settings');
+  if(!nodOK())return hwMsg(pre+'No Distraction only works while reading');
   clearTimeout(nodT);nodT=null;S.nodHide=true;$('#scr').classList.add('nod');return hwMsg(pre+'No Distraction')}
  if(!reading)return hwMsg(pre+name+' (open a book first)');
  if(a==='next')turn(1);else if(a==='prev')turn(-1);else jump(1);
  hwMsg(pre+name)}
-/* MultiPaper (app switcher) */
-function mpHTML(){
- const list=S.open.map(id=>S.books.find(b=>b.id===id)).filter(Boolean),cur=S.cur;
- return `<div class="mp" role="dialog" aria-label="MultiPaper"><header><h2>MultiPaper</h2><span style="color:var(--mut);font-size:12px">${list.length} open</span></header>
- ${list.length?`<div class="mpg">${list.map(b=>`<div class="mpc${b.id===cur&&['read','rctrl','track'].includes(S.screen)?' cur':''}"><button class="x" aria-label="Close ${esc(b.title)}" onclick="mpClose(${b.id})">${svg('x')}</button><button class="th" ${cvStyle(b)} aria-label="Open ${esc(b.title)}" onclick="openBook(${b.id})">${b.cover?'':esc(b.title)}</button><strong>${esc(b.title)}</strong><small>Page ${b.page+1} of ${b.pages.length}</small></div>`).join('')}</div>`
- :`<div class="mpg"><p class="empty" style="grid-column:1/-1">No open books or files. Open one from the Library and it will show up here.</p></div>`}
- <footer><button class="item" onclick="mpLib()">Library</button>${list.length?`<button class="item" onclick="mpCloseAll()">Close all</button>`:''}<button class="item" onclick="mpDone()">Done</button></footer></div>`}
-function mpDone(){S.mp=false;render()}
-function mpLib(){S.mp=false;go('home')}
-function mpClose(id){S.open=S.open.filter(x=>x!==id);
- if(S.cur===id&&['read','rctrl','track'].includes(S.screen)){S.cur=null;S.screen='home'}
- save();render()}
-function mpCloseAll(){S.open=[];if(['read','rctrl','track'].includes(S.screen)){S.cur=null;S.screen='home'}save();render();toast('All closed')}
 function finish(){const b=book();b.done=Date.now();save();go('done')}
 function restart(id){const b=S.books.find(x=>x.id===id);if(b){b.page=0;b.secs=0;b.vis=[];b.done=0}openBook(id)}
 const fmtT=n=>n<60?`${n}<small>sec</small>`:n<3600?`${Math.floor(n/60)}<small>min</small>`:`${Math.floor(n/3600)}<small>h</small> ${Math.floor(n%3600/60)}<small>m</small>`;
@@ -829,8 +832,9 @@ function cycleTO(){S.timeout=S.timeout===0?1:S.timeout===1?5:0;save();resetSleep
 function bright(){$('#scr').style.opacity=S.bright/100*.4+.6}
 let sl;function resetSleep(){clearTimeout(sl);if(S.timeout)sl=setTimeout(()=>{const d=document.createElement('div');d.className='sleep';d.textContent='Paper';d.onclick=()=>{d.remove();resetSleep()};$('#scr').append(d)},S.timeout*60000)}
 /* No Distraction: hide the status bar after 30 s without using it */
+const NODS=['read','rctrl','track'],nodOK=()=>!!S.nod&&NODS.includes(S.screen);
 let nodT=null;
-function startNod(){clearTimeout(nodT);nodT=null;if(!S.nod)return;nodT=setTimeout(()=>{nodT=null;S.nodHide=true;$('#scr')?.classList.add('nod')},30000)}
+function startNod(){clearTimeout(nodT);nodT=null;if(!nodOK())return;nodT=setTimeout(()=>{nodT=null;S.nodHide=true;$('#scr')?.classList.add('nod')},30000)}
 /* battery (experimental) */
 let battObj=null;
 const battTxt=()=>{if(!S.batt)return'';if(!navigator.getBattery)return' · Battery N/A';if(S.bl==null)return' · …';return' · '+S.bl+'%'+(S.bch?' charging':'')};
@@ -839,7 +843,7 @@ function battInit(){if(battObj||!navigator.getBattery)return;
   ['levelchange','chargingchange'].forEach(n=>b.addEventListener(n,u));u()}).catch(()=>{S.bl=null;const e=$('#batt');if(e)e.textContent=' · Battery N/A'})}
 function render(){
  const s=$('#scr'),cur=S.screen,prev=S.shown,rg=['read','rctrl','track'];
- s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(S.nod&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
+ s.className='screen'+(S.dark?' dark':'')+(S.night?' warm':'')+(S.ccolor?' cc':'')+(S.hpos==='bottom'?' hb':'')+(nodOK()&&S.nodHide?' nod':'')+(logoOn()?'':' nologo');
  $('.device').className='device'+(S.anim?'':' noanim')+' f-'+frameKey()+(S.dark?' dark':'')+(S.full?' full':'')+(S.back?' isback':'');
  applyDev();renderBack();
  document.documentElement.dataset.theme=S.dark?'dark':'light';
@@ -849,7 +853,6 @@ function render(){
  if(rg.includes(cur)){const bk=book();if(bk)layoutText(cur,bk)}
  if(S.sheet)s.insertAdjacentHTML('beforeend',sheet());
  if(S.bmenu&&cur==='books')s.insertAdjacentHTML('beforeend',bmenu());
- if(S.mp)s.insertAdjacentHTML('beforeend',mpHTML());
  if(prev!==cur){
   if(rg.includes(prev)&&rg.includes(cur))s.querySelector('.bar,.trk')?.classList.add('drop-in');
   else if(cur!=='chapters'){s.classList.add('enter-'+({read:'zoom',ctrl:'drop'}[cur]||'fade'));
@@ -859,13 +862,13 @@ function render(){
  if(cur==='read'){const k=book();if(k){k.vis=k.vis||[];if(!k.vis.includes(k.page))k.vis.push(k.page)}}
  if(cur==='chapters'){const c=$('#chcur');if(c)c.scrollIntoView({block:'center'})}
  if(cur==='done'&&prev!==cur){runCount();if(S.anim)setTimeout(()=>{try{navigator.vibrate&&navigator.vibrate([40,60,40])}catch(e){}},1250)}
- if(S.nod){if(prev!==cur){S.nodHide=false;s.classList.remove('nod');startNod()}else if(!nodT&&!S.nodHide)startNod()}
+ if(nodOK()){if(prev!==cur){S.nodHide=false;s.classList.remove('nod');startNod()}else if(!nodT&&!S.nodHide)startNod()}
  else{clearTimeout(nodT);nodT=null;S.nodHide=false}
  if(S.batt&&cur==='ctrl')battInit();
  S.shown=cur;bright();resetSleep();
  if(S.off){const d=document.createElement('div');d.className='sleep off';d.setAttribute('aria-label','Screen off. Tap to turn on');d.onclick=()=>{S.off=false;render()};s.append(d)}
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.mp)return mpDone();if(S.mp)return;if(S.screen==='read'||S.screen==='rctrl'){if(e.key==='ArrowRight')turn(1);if(e.key==='ArrowLeft')turn(-1)}});
+document.addEventListener('keydown',e=>{if(S.screen==='read'||S.screen==='rctrl'){if(e.key==='ArrowRight')turn(1);if(e.key==='ArrowLeft')turn(-1)}});
 $('#file').onchange=e=>{importFiles([...e.target.files]);e.target.value=''};
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',e=>{e.preventDefault();importFiles([...e.dataTransfer.files])});
@@ -909,7 +912,7 @@ sc.addEventListener('touchcancel',()=>{cu.on=0},{passive:true});
 sc.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')cuStart(e.clientX,e.clientY,e.target)});
 sc.addEventListener('pointerup',e=>{if(e.pointerType!=='touch')cuEnd(e.clientX,e.clientY)});
 /* using the status bar keeps it visible; a tap on the hidden bar brings it back */
-sc.addEventListener('pointerdown',e=>{if(!S.nod||!e.target.closest('.top .info'))return;
+sc.addEventListener('pointerdown',e=>{if(!nodOK()||!e.target.closest('.top .info'))return;
  if(S.nodHide){S.nodHide=false;$('#scr').classList.remove('nod');swAt=Date.now()+250}
  startNod()},true);
 /* swipe down from the top of PaperHome opens Paper Controls */
@@ -945,12 +948,11 @@ bk.addEventListener('pointerup',end);bk.addEventListener('pointercancel',end)})(
  if(st)Object.assign(S,st);S.timeout=0;
  /* 6.x -> 7.0: the metallic frames became device colours */
  if(st&&st.bezel===undefined){const f=st.frame;if(['gold','rose','blue','green'].includes(f))S.dcol=f;S.bezel=(f==='white'||f==='dark')?f:'auto'}
- S.back=false;S.mp=false;
+ S.back=false;
  if(!S.books.length){
   const lo='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus nunc, semper et dolor at, tincidunt sagittis enim. Sed sollicitudin dolor id velit condimentum scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tincidunt tortor, at accumsan metus volutpat vel.';
   S.books.push({id:1,title:'Sample: Reading Paper',pages:Array.from({length:24},(_,i)=>i===0?'Welcome to Paper. Tap the right side of a page to go forward, the left side to go back, and the center for reading controls. Add your own books from the home screen. To highlight, press and hold a word, drag to select, then pick a color.\n\n'+lo:lo+'\n\n'+lo.split('. ').reverse().join('. ')),page:0,last:0,added:Date.now()});
  }
- S.open=(S.open||[]).filter(id=>S.books.some(b=>b.id===id));
  S.screen='home';render();
 })();
 const refit=()=>{S.fc={};if(['read','rctrl','track'].includes(S.screen)&&book())render()};
